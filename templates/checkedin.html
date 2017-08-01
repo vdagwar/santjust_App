@@ -1,0 +1,617 @@
+﻿<html>
+<head>
+    <title>Card Reader</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_Bootstrap.min.css">
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_Jquery_Minified"></script>
+    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            font-size: 20px !important;
+            border: 1px solid black;
+        }
+
+        .btn, .form-control {
+            border-radius: 0px;
+        }
+
+        .checkedindiv {
+            display: none;
+        }
+        .btn-primary{
+            background-color:#001b51;
+        }
+    </style>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+    <div class="container" style="padding-top:20px!important">
+        <div class="row" style="padding-top:10px!important">
+            <div class="col-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0;">
+                <div>
+                    <input type="text" name="txt" class="form-control" onchange="CardReader(this.value)">
+                </div>
+            </div>
+            <div class="col-6 col-md-2 col-sm-2 col-sm-2">
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="myFunction1()">Guest</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-top:10px!important">
+            <div class="col-6 col-md-6"></div>
+            <div class="col-6 col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-6 col-md-6 col-sm-6 col-xs-6">
+                            <input type="text" name="txt" class="form-control">
+                        </div>
+                        <div class="col-6 col-md-6 col-sm-6 col-xs-6">
+                            <button type="button" class="btn btn-primary" onclick="myFunction2()">Get Info</button>
+                        </div>
+                        <div class="col-12 col-md-12 col-sm-12 col-xs-12" style="height:100px;margin-top:10px!important;border:1px solid;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row checkedindiv">
+            <button type="button" class="btn btn-primary validate" onclick="myFunction3()">Check In</button><br>
+            <table class="table table-bordered checkedintable">
+                <thead>
+                    <tr>
+                        <th>Contact</th>
+                        <th>Checked In</th>
+                        <th>Checked Out</th>
+                        <th>Is Checked Out</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+    <script>
+        function CardReader(val) {
+            debugger;
+            if (val != "") {
+                var req = new XMLHttpRequest();
+                req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_cards?$filter=vtv_name eq '" + val + "'", true);             
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 200) {
+                            var results = JSON.parse(this.response);
+                            console.log(results);
+                            if (results.value.length == 0) {
+                                window.parent.Xrm.Utility.alertDialog("No card found with number: " + val);
+                            }
+                            for (var i = 0; i < results.value.length; i++) {
+                                var vtv_cardid = results.value[i]["vtv_cardid"];
+                                vtv_cardid = vtv_cardid.replace(/[{}]/g, "");
+                                GetCheckedIns(vtv_cardid);
+                            }
+                        } else {
+                            window.parent.Xrm.Utility.alertDialog(this.statusText);
+                        }
+                    }
+                };
+                req.send();
+            }
+
+        }
+
+        function GetCheckedIns(cardId) {
+            $("table.checkedintable tbody").empty();
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_checkedins?$select=createdon,vtv_checkedintime,vtv_checkedout,vtv_checkedouttime,_vtv_member_value&$filter=_vtv_card_value eq " + cardId + "&$orderby=createdon desc", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var createdon = results.value[i]["createdon"];
+                            var vtv_checkedintime = results.value[i]["vtv_checkedintime"];
+                            var vtv_checkedout = results.value[i]["vtv_checkedout"];
+                            var vtv_checkedout_formatted = results.value[i]["vtv_checkedout@OData.Community.Display.V1.FormattedValue"];
+                            var vtv_checkedouttime = results.value[i]["vtv_checkedouttime"];
+                            if (vtv_checkedouttime == undefined || vtv_checkedouttime == "null") {
+                                vtv_checkedouttime = "";
+                            }
+                            if (vtv_checkedout == undefined || vtv_checkedout == "null") {
+                                vtv_checkedout = "";
+                            }
+                            var _vtv_member_value = results.value[i]["_vtv_member_value"];
+                            var _vtv_member_value_formatted = results.value[i]["_vtv_member_value@OData.Community.Display.V1.FormattedValue"];
+                            var _vtv_member_value_lookuplogicalname = results.value[i]["_vtv_member_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+                            $("<tr><th scope='row'>" + _vtv_member_value_formatted + "</th><td>" + vtv_checkedintime + "</td><td>" + vtv_checkedouttime + "</td><td>" + vtv_checkedout_formatted + "</td></tr>").appendTo("table.checkedintable tbody");
+                        }
+
+                        if (results.value.length > 0 && _vtv_member_value[0] != null) {
+                            window.open(window.location.origin + "/main.aspx?etn=contact&pagetype=entityrecord&id=" + _vtv_member_value + "#638020770");
+                            console.log(window.location.origin + "/main.aspx?etn=contact&pagetype=entityrecord&id=" + _vtv_member_value + "#638020770");
+                        }
+
+                        if (results.value.length > 0) {
+                            $(".checkedindiv").show();
+                        } else {
+                            $("<tr><th scope='row'>'No cheked in for this card'</td></tr>").appendTo("table.checkedintable tbody");
+                        }
+
+                        if (results.value.length > 0 && vtv_checkedout_formatted[0] == "No" || vtv_checkedout_formatted[0] == null) {
+                            $(".validate").hide();
+                        }
+                    } else {
+                        window.parent.Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+    </script>
+
+</body>
+</html>
+
+<html>
+<head>
+    <title>Card Reader</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_Bootstrap.min.css">
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_Jquery_Minified"></script>
+    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            font-size: 20px !important;
+            border: 1px solid black;
+        }
+
+        .btn, .form-control {
+            border-radius: 0px;
+        }
+
+        .checkedindiv {
+            display: none;
+        }
+    </style>
+
+</head>
+<body style="word-wrap: break-word;">
+    <div class="container" style="padding-top:20px!important">
+        <div class="row" style="padding-top:10px!important">
+            <div class="col-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0;">
+                <div>
+                    <input type="text" name="txt" class="form-control" onchange="CardReader(this.value)">
+                </div>
+            </div>
+            <div class="col-6 col-md-2 col-sm-2 col-sm-2">
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="myFunction1()">Guest</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-top:10px!important">
+            <div class="col-6 col-md-6"></div>
+            <div class="col-6 col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-6 col-md-6 col-sm-6 col-xs-6">
+                            <input type="text" name="txt" class="form-control">
+                        </div>
+                        <div class="col-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0;">
+                            <button type="button" class="btn btn-primary" onclick="myFunction2()">Get Info</button>
+                        </div>
+                        <div class="col-12 col-md-12 col-sm-12 col-xs-12" style="height:100px;margin-top:10px!important;border:1px solid;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row checkedindiv">
+            <button type="button" class="btn btn-primary validate" onclick="CreateCheckedIn()">Check In</button><br>
+            <table class="table table-bordered checkedintable">
+                <thead>
+                    <tr>
+                        <th>Contact</th>
+                        <th>Checked In</th>
+                        <th>Checked Out</th>
+                        <th>Is Checked Out</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+    <script>
+        var vtv_cardid = ""; var memberGuid = "";
+        function CardReader(val) {
+            debugger;
+            if (val != "") {
+                var req = new XMLHttpRequest();
+                req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_cards?$filter=vtv_name eq '" + val + "'", true);
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 200) {
+                            var results = JSON.parse(this.response);
+                            console.log(results);
+                            if (results.value.length == 0) {
+                                window.parent.Xrm.Utility.alertDialog("No card found with number: " + val);
+                            }
+                            for (var i = 0; i < results.value.length; i++) {
+                                vtv_cardid = results.value[i]["vtv_cardid"];
+                                vtv_cardid = vtv_cardid.replace(/[{}]/g, "");
+                                GetCheckedIns(vtv_cardid);
+                            }
+                        } else {
+                            window.parent.Xrm.Utility.alertDialog(this.statusText);
+                        }
+                    }
+                };
+                req.send();
+            }
+
+        }
+
+        function GetCheckedIns(cardId) {
+            $("table.checkedintable tbody").empty();
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_checkedins?$select=createdon,vtv_checkedintime,vtv_checkedout,vtv_checkedouttime,_vtv_member_value&$filter=_vtv_card_value eq " + cardId + "&$orderby=createdon desc", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        debugger;
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var createdon = results.value[i]["createdon"];
+                            var vtv_checkedintime = results.value[i]["vtv_checkedintime"];
+                            var vtv_checkedout = results.value[i]["vtv_checkedout"];
+                            var vtv_checkedout_formatted = results.value[i]["vtv_checkedout@OData.Community.Display.V1.FormattedValue"];
+                            var vtv_checkedouttime = results.value[i]["vtv_checkedouttime"];
+                            if (vtv_checkedouttime == undefined || vtv_checkedouttime == "null") {
+                                vtv_checkedouttime = "";
+                            } else {
+                                vtv_checkedouttime = new Date(vtv_checkedouttime);
+                            }
+                            if (vtv_checkedintime == undefined || vtv_checkedintime == "null") {
+                                vtv_checkedintime = "";
+                            } else {
+                                vtv_checkedintime = new Date(vtv_checkedintime);
+                            }
+                            if (vtv_checkedout == undefined || vtv_checkedout == "null") {
+                                vtv_checkedout = "";
+                            }
+
+                            var _vtv_member_value = results.value[i]["_vtv_member_value"];
+                            memberGuid = _vtv_member_value.replace(/[{}]/g, "");
+                            var _vtv_member_value_formatted = results.value[i]["_vtv_member_value@OData.Community.Display.V1.FormattedValue"];
+                            memberName = _vtv_member_value_formatted;
+                            var _vtv_member_value_lookuplogicalname = results.value[i]["_vtv_member_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+                            $("<tr><th scope='row'>" + _vtv_member_value_formatted + "</th><td>" + vtv_checkedintime + "</td><td>" + vtv_checkedouttime + "</td><td>" + vtv_checkedout_formatted + "</td></tr>").appendTo("table.checkedintable tbody");
+
+                            if (i = 0) {
+                                if (_vtv_member_value[i] != null) {
+                                    window.open(window.location.origin + "/main.aspx?etn=contact&pagetype=entityrecord&id=" + _vtv_member_value[i] + "#638020770");
+                                    console.log(window.location.origin + "/main.aspx?etn=contact&pagetype=entityrecord&id=" + _vtv_member_value[i] + "#638020770");
+                                }
+
+                                console.log("checked out " + vtv_checkedout_formatted[i]);
+                                if (vtv_checkedout_formatted[i] == "No" || vtv_checkedout_formatted[i] == null) {
+                                    $(".validate").hide();
+                                }
+                            }
+                        }
+
+                        if (results.value.length > 0) {
+                            $(".checkedindiv").show();
+                        } else {
+                            $("<tr><th scope='row'>'No cheked in for this card'</td></tr>").appendTo("table.checkedintable tbody");
+                        }
+
+                    } else {
+                        window.parent.Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+
+        function CreateCheckedIn() {
+            debugger;
+            var offset = +7;
+            var datetimenow = new Date(new Date().getTime() + offset * 3600 * 1000).toUTCString().replace(/ GMT$/, "");
+            var entity = {};
+            entity.vtv_name = memberName;
+            entity["vtv_card@odata.bind"] = "/vtv_cards(" + vtv_cardid + ")";
+            entity.vtv_checkedintime = datetimenow;
+            entity.vtv_type = 100000000;
+            alert(memberName + " vtv_cardid" + vtv_cardid + " memberGuid" + memberGuid);
+            if (memberGuid != "") {
+                entity["vtv_member@odata.bind"] = "/contacts(" + memberGuid + ")";
+            }
+
+            var req = new XMLHttpRequest();
+            req.open("POST", Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_checkedins", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 204) {
+                        var uri = this.getResponseHeader("OData-EntityId");
+                        var regExp = /\(([^)]+)\)/;
+                        var matches = regExp.exec(uri);
+                        var newEntityId = matches[1];
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send(JSON.stringify(entity));
+        }
+    </script>
+
+
+</body>
+</html>
+
+<html>
+<head>
+    <title>Card Reader</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_Bootstrap.min.css">
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_Jquery_Minified"></script>
+    <script src="ClientGlobalContext.js.aspx" type="text/javascript"></script>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            font-size: 20px !important;
+            border: 1px solid black;
+        }
+
+        .btn, .form-control {
+            border-radius: 0px;
+        }
+
+        .checkedindiv {
+            display: none;
+        }
+    </style>
+   
+</head>
+<body style="word-wrap: break-word;">
+    <div class="container" style="padding-top:20px!important">
+        <div class="row" style="padding-top:10px!important">
+            <div class="col-6 col-md-6 col-sm-6 col-xs-6">
+                <div>
+                    <input type="text" name="txt" class="form-control" onchange="CardReader(this.value)">
+                </div>
+            </div>
+            <div class="col-6 col-md-2 col-sm-2 col-sm-2">
+                <div>
+                    <button type="button" class="btn btn-primary" onclick="myFunction1()">Guest</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-top:10px!important">
+            <div class="col-6 col-md-6"></div>
+            <div class="col-6 col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0;">
+                            <input type="text" name="txt" class="form-control">
+                        </div>
+                        <div class="col-6 col-md-6 col-sm-6 col-xs-6" style="padding: 0;">
+                            <button type="button" class="btn btn-primary" onclick="myFunction2()">Get Info</button>
+                        </div>
+                        <div class="col-12 col-md-12 col-sm-12 col-xs-12" style="height:100px;margin-top:10px!important;border:1px solid;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row checkedindiv">
+            <button type="button" class="btn btn-primary validate" onclick="CreateCheckedIn()">Check In</button><br>
+            <table class="table table-bordered checkedintable">
+                <thead>
+                    <tr>
+                        <th>Contact</th>
+                        <th>Checked In</th>
+                        <th>Checked Out</th>
+                        <th>Is Checked Out</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+    </div>
+    <script>
+        var vtv_cardid = ""; var memberGuid = "";
+        function CardReader(val) {
+            debugger;
+            if (val != "") {
+                var req = new XMLHttpRequest();
+                req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_cards?$filter=vtv_name eq '" + val + "'", true);
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 200) {
+                            var results = JSON.parse(this.response);
+                            console.log(results);
+                            if (results.value.length == 0) {
+                                window.parent.Xrm.Utility.alertDialog("No card found with number: " + val);
+                            }
+                            for (var i = 0; i < results.value.length; i++) {
+                                vtv_cardid = results.value[i]["vtv_cardid"];
+                                vtv_cardid = vtv_cardid.replace(/[{}]/g, "");
+                                GetCheckedIns(vtv_cardid);
+                            }
+                        } else {
+                            window.parent.Xrm.Utility.alertDialog(this.statusText);
+                        }
+                    }
+                };
+                req.send();
+            }
+
+        }
+
+        function GetCheckedIns(cardId) {
+            $("table.checkedintable tbody").empty();
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_checkedins?$select=createdon,vtv_checkedintime,vtv_checkedout,vtv_checkedouttime,_vtv_member_value&$filter=_vtv_card_value eq " + cardId + "&$orderby=createdon desc", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        debugger;
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var createdon = results.value[i]["createdon"];
+                            var vtv_checkedintime = results.value[i]["vtv_checkedintime"];
+                            var vtv_checkedout = results.value[i]["vtv_checkedout"];
+                            var vtv_checkedout_formatted = results.value[i]["vtv_checkedout@OData.Community.Display.V1.FormattedValue"];
+                            var vtv_checkedouttime = results.value[i]["vtv_checkedouttime"];
+                            if (vtv_checkedouttime == undefined || vtv_checkedouttime == "null") {
+                                vtv_checkedouttime = "";
+                            } else {
+                                vtv_checkedouttime = new Date(vtv_checkedouttime);
+                            }
+                            if (vtv_checkedintime == undefined || vtv_checkedintime == "null") {
+                                vtv_checkedintime = "";
+                            } else {
+                                vtv_checkedintime = new Date(vtv_checkedintime);
+                            }
+                            if (vtv_checkedout == undefined || vtv_checkedout == "null") {
+                                vtv_checkedout = "";
+                            }
+                           
+                            var _vtv_member_value = results.value[i]["_vtv_member_value"];
+                            memberGuid = _vtv_member_value.replace(/[{}]/g, "");
+                            var _vtv_member_value_formatted = results.value[i]["_vtv_member_value@OData.Community.Display.V1.FormattedValue"];
+                            memberName = _vtv_member_value_formatted;
+                            var _vtv_member_value_lookuplogicalname = results.value[i]["_vtv_member_value@Microsoft.Dynamics.CRM.lookuplogicalname"];
+                            $("<tr><th scope='row'>" + _vtv_member_value_formatted + "</th><td>" + vtv_checkedintime + "</td><td>" + vtv_checkedouttime + "</td><td>" + vtv_checkedout_formatted + "</td></tr>").appendTo("table.checkedintable tbody");
+
+                            if (i == 0) {
+                                if (_vtv_member_value[i] != null) {
+                                    window.open(window.location.origin + "/main.aspx?etn=contact&pagetype=entityrecord&id=" + _vtv_member_value[i] + "#638020770");
+                                    console.log(window.location.origin + "/main.aspx?etn=contact&pagetype=entityrecord&id=" + _vtv_member_value[i] + "#638020770");
+                                }
+
+                                console.log("checked out " + vtv_checkedout_formatted[i]);
+                                if (vtv_checkedout_formatted[i] == "N" || vtv_checkedout_formatted[i] == null) {
+                                    $(".validate").hide();
+                                }
+                            }
+                        }
+
+                        if (results.value.length > 0) {
+                            $(".checkedindiv").show();
+                        } else {
+                            $("<tr><th scope='row'>'No cheked in for this card'</td></tr>").appendTo("table.checkedintable tbody");
+                        }
+
+                    } else {
+                        window.parent.Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+
+        function CreateCheckedIn() {
+            debugger;
+            var offset = +7;
+            var datetimenow = new Date(new Date().getTime() + offset * 3600 * 1000).toUTCString().replace(/ GMT$/, "");
+            var entity = {};
+            entity.vtv_name = memberName;
+            entity["vtv_card@odata.bind"] = "/vtv_cards(" + vtv_cardid + ")";
+            entity.vtv_checkedintime = datetimenow;
+            entity.vtv_type = 100000000;
+            alert(memberName + " vtv_cardid" + vtv_cardid + " memberGuid" + memberGuid);
+            if (memberGuid != "") {
+                entity["vtv_member@odata.bind"] = "/contacts(" + memberGuid + ")";
+            }
+
+            var req = new XMLHttpRequest();
+            req.open("POST", Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_checkedins", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 204) {
+                        var uri = this.getResponseHeader("OData-EntityId");
+                        var regExp = /\(([^)]+)\)/;
+                        var matches = regExp.exec(uri);
+                        var newEntityId = matches[1];
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send(JSON.stringify(entity));
+        }
+    </script>
+
+
+</body>
+</html>

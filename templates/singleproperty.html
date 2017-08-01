@@ -1,0 +1,1819 @@
+﻿<ion-view view-title="Detalles de la propiedad" cache-view="false">
+    <ion-content class="propertyInfo">
+        <div style="width:100%!important">
+            <div ng-repeat="fac in propertyDeatil">
+                <span class="hide propertyGuid">{{fac.productid}}</span>
+                <ion-slide-box style="min-height:200px;" does-continue="true">
+                    <ion-slide ng-repeat="img in propertyDeatil.images">
+                        <div class="box blue home-hello">
+                            <div>
+                                <img class="image-sc" src="data:image/png;base64,{{img.Body}}" />
+                            </div>
+                        </div>
+                    </ion-slide>
+                    <ion-slide ng-if="propertyDeatil.images.length == '0'" style="width:100%!important">
+                        <div class="box blue home-hello">
+                            <div class="">
+                                <img class="product-image" src="data:image/jpeg;base64,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" />
+                            </div>
+                        </div>
+                    </ion-slide>
+                </ion-slide-box>
+                <div class="row uppder-20-sc">
+                    <div class="col">
+                        <a ng-if="fac.youtube !=null" href="{{fac.youtube}}"><img src="data:image/png;base64,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" /></a>
+                    </div>
+                    <div class="col-10" style="max-width: 15%;">
+                        <a ng-if="fac.www !=null" href="{{fac.www}}"><img class="icon icons8-Domain" src="data:image/png;base64,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" width="50" height="50"></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="row pad-0">
+                            <h5 class="col item-name bold">{{fac.name}}</h5>
+                            <p class="col-33 ref"><span class="bold-sc">Ref.: </span>{{fac.sj_productnumber}}</p>
+                        </div>
+                        <div>
+                            <b ng-if="fac.price != 'null' || fac.price != null|| fac.price != ''" style="color:#1a8cbf"><span class="money">{{fac.price}}</span>&euro;&nbsp;</b><br />
+                            <span class="tipo"><span class="bold-sc">Tipo: </span>{{fac.sj_propertytype}}</span>
+                        </div>
+                    </div>
+                    <i id={{fac.productid}} class="ion-android-star-outline col-25" ng-click="addToFavority(fac)" style=""></i>
+                </div>
+
+                <div class="row">
+                    <div class="col"><span class="bold-sc">Habitaciones: </span>{{fac.sj_rooms}}</div><hr>
+                    <div class="col"><span class="bold-sc">Banos: </span>{{fac.sj_nofbathrooms}}</div>
+                </div>
+                <div class="row-sc row">
+                    <div class="col"><span class="bold-sc">M2 apox: </span>{{fac.sj_m2}}</div><hr>
+                    <div class="col"><span class="bold-sc">Orientaction: </span>{{fac.orientacion}}</div>
+                </div>
+                <div class="row"><p class="col"><span class="bold-sc">Estado: </span>{{fac.estado}}</p><p class="col"><span class="bold-sc">Antiguedad: </span>{{fac.antiguedad}}</p></div>
+
+                <div class="inmueble">
+                    <button class="button button-stable button-full" style="box-shadow:none">
+                        caracteristicas inmueble<i class="ion-arrow-down-b" style="float:right;color:#b5b2b2"></i>
+                    </button>
+                    <div class="options-inmueble">
+                        <!-- parking -->
+                        <div class="col col-50 f-left" ng-if="fac.Puerta_automatica =='True'"><p class="ion-record"> Puerta automatica</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Parking_communitario =='True'"><p class="ion-record"> Parking communitario</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Parking_Garage_Privado =='True'"><p class="ion-record"> Parking Garage Privado</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Parking_subterraneo =='True'"><p class="ion-record"> Parking subterraneo</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Parking_exterior =='True'"><p class="ion-record"> Parking exterior</p></div>
+
+                        <!-- Piscina -->
+                        <div class="col col-50 f-left" ng-if="fac.Piscina =='True'"><p class="ion-record"> Piscina</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Piscina_Climatizada =='True'"><p class="ion-record"> Piscina Climatizada</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Piscina_Commutaria =='True'"><p class="ion-record"> Piscina Commutaria</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Piscina_Cubierta =='True'"><p class="ion-record"> Piscina Cubierta</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Piscina_de_agua_salada =='True'"><p class="ion-record"> Piscina de agua salada</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Piscina_de_Agua_dulce =='True'"><p class="ion-record"> Piscina de Agua dulce</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Piscina_Exterior =='True'"><p class="ion-record"> Piscina Exterior</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Piscina_para_ninos =='True'"><p class="ion-record"> Piscina para ninos</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Terreza_Solarium =='True'"><p class="ion-record"> Terreza Solarium</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Tumbona =='True'"><p class="ion-record"> Tumbona</p></div>
+
+                        <!-- Servicio -->
+                        <div class="col col-50 f-left" ng-if="fac.Conserje_portero =='True'"><p class="ion-record"> Conserje portero</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Servicio_de_video_portero =='True'"><p class="ion-record"> Servicio de video portero</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Intercom =='True'"><p class="ion-record"> Intercom</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Inmueble_accesible_para_personas_con_mobilidad_red =='True'"><p class="ion-record"> Inmueble accesible para personas con mobilidad red</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Circuito_cerrado_de_seguridad =='True'"><p class="ion-record"> Circuito cerrado de seguridad</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Ascensores =='True'"><p class="ion-record"> Ascensores</p></div>
+
+                        <!-- ocio -->
+                        <div class="col col-50 f-left" ng-if="fac.Mini_Golf =='True'"><p class="ion-record"> Mini Golf</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Baloncesto =='True'"><p class="ion-record"> Baloncesto</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Futbal_Sala =='True'"><p class="ion-record"> Futbal Sala</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Squash =='True'"><p class="ion-record"> Squash</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Pista_Padel =='True'"><p class="ion-record"> Pista Padel</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Pista_Tenis =='True'"><p class="ion-record"> Pista Tenis</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Gimnasio =='True'"><p class="ion-record"> Gimnasio</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Zona_Spa =='True'"><p class="ion-record"> Zona Spa</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Zona_Verde =='True'"><p class="ion-record"> Zona Verde</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Zona_Infantil =='True'"><p class="ion-record"> Zona Infantil</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Zona_Comunitaria =='True'"><p class="ion-record"> Zona Comunitaria</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Supermercedo =='True'"><p class="ion-record"> Supermercedo</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Peluquiria =='True'"><p class="ion-record"> Peluquiria</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Restaurantes =='True'"><p class="ion-record"> Restaurantes</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Cafeteria =='True'"><p class="ion-record"> Cafeteria</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.CheckBox30 =='True'"><p class="ion-record"> CheckBox30</p></div>
+
+                    </div>
+
+                </div>
+
+                <div class="vivienda">
+                    <button class="button button-stable button-full no-shadow">
+                        caracteristicas vivienda<i class="ion-arrow-down-b arrow-down"></i>
+                    </button>
+                    <div class="options-vivienda">
+                        <!-- floors, Certificado_energetico, Habitaciones -->
+                        <div class="col col-50 f-left" ng-if="fac.floors ==''"><p class="ion-record"> {{fac.floors}}</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Certificado_energetico =='True'"><p class="ion-record"> {{fac.Certificado_energetico}}</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Armarios_empotrados =='True'"><p class="ion-record"> Armarios empotrados</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Suite_con_bano =='True'"><p class="ion-record"> Suite con bano</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Bano =='True'"><p class="ion-record"> Bano</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Ducha =='True'"><p class="ion-record"> Ducha</p></div>
+
+                        <!-- General -->
+                        <div class="col col-50 f-left" ng-if="fac.Puerta_de_seguridad =='True'"><p class="ion-record"> Puerta de seguridad</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Sistema_de_alarma =='True'"><p class="ion-record"> Sistema de alarma</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Doble_cristalamiento =='True'"><p class="ion-record"> Doble cristalamiento</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Videoportero =='True'"><p class="ion-record"> Videoportero</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Sinamueblar =='True'"><p class="ion-record"> Sinamueblar</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Antena_parabolica =='True'"><p class="ion-record"> Antena parabolica</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Contraventanas =='True'"><p class="ion-record"> Contraventanas</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Tv_Cable_Or_Satelite =='True'"><p class="ion-record"> Tv Cable / Satelite</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Trastero ==''"><p class="ion-record"> {{fac.Trastero}}</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Terraza =='True'"><p class="ion-record"> Terraza</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Balcones =='True'"><p class="ion-record"> Balcones</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Con_Parking ==''"><p class="ion-record"> {{fac.Con_Parking}}</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Jardin_Privado =='True'"><p class="ion-record"> Jardin Privado</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Amueblado =='True'"><p class="ion-record"> Amueblado</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Garaje_Privado =='True'"><p class="ion-record"> Garaje Privado</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Accesible_con_silla_de_ruedas =='True'"><p class="ion-record"> Accesible con silla de ruedas</p></div>
+
+                        <!-- vista -->
+                        <div class="col col-50 f-left" ng-if="fac.Vista_a_al_montana =='True'"><p class="ion-record"> Vista a al montana</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Vista_piscine =='True'"><p class="ion-record"> Vista piscine</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Vista_Interior =='True'"><p class="ion-record"> Vista Interior</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Vista_Exterior =='True'"><p class="ion-record"> Vista Exterior</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Vista_al_mar =='True'"><p class="ion-record"> Vista al mar</p></div>
+
+                        <!-- cocina -->
+                        <div class="col col-50 f-left" ng-if="fac.Muebles_de_cocina =='True'"><p class="ion-record"> Muebles de cocina</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Microondas =='True'"><p class="ion-record"> Microondas</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Electrodomesticos =='True'"><p class="ion-record"> Electrodomesticos</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Horno =='True'"><p class="ion-record"> Horno</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Lavadora =='True'"><p class="ion-record"> Lavadora</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Nevera =='True'"><p class="ion-record"> Nevera</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Cocina_Americana =='True'"><p class="ion-record"> Cocina Americana</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Lavabajillas =='True'"><p class="ion-record"> Lavabajillas</p></div>
+
+                        <!-- cocina -->
+                        <div class="col col-50 f-left" ng-if="fac.Energia_Sola =='True'"><p class="ion-record"> Energia Sola</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Calefaccion_suelo =='True'"><p class="ion-record"> Calefaccion suelo</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.calefaccion_eletrica =='True'"><p class="ion-record"> calefaccion eletrica</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.calefaccion_gas =='True'"><p class="ion-record"> calefaccion gas</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.calefaccion_individual =='True'"><p class="ion-record"> calefaccion individual</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Chimenea =='True'"><p class="ion-record"> Chimenea</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Aire_acondicionado_frio =='True'"><p class="ion-record"> Aire acondicionado frio</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Ac_frio_or_calor =='True'"><p class="ion-record"> Ac frio or calor</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.calefaccion_central =='True'"><p class="ion-record"> calefaccion central</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.AC_individual =='True'"><p class="ion-record"> AC individual</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Agua_calienta_termo =='True'"><p class="ion-record"> Agua calienta termo</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.AC_central =='True'"><p class="ion-record"> AC central</p></div>
+                        <div class="col col-50 f-left" ng-if="fac.Ducha =='True'"><p class="ion-record"> Agua calienta</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="item item-divider destination-address">{{dest}}</div>
+        <!--<div id="map_canvas" style="height: 35%; width: auto; position: relative;"></div>-->
+        <div id="map" style="height: 35%; width: auto; position: relative;"></div>
+        <div class="row">
+            <div class="col-10"></div>
+            <a href="tel:0034977371151" id="Call" class="col-33 button button-positive" style="padding: 0">LLAMAR</a>
+            <div class="col-10"></div>
+            <button id="chat" class="col-33 button button-positive" style="padding: 0">
+                LLAMAME
+            </button>
+            <div class="col-10"></div>
+        </div>
+        <div class="overlay">
+            <div id="loading-img"></div>
+        </div>
+    </ion-content>
+    <ion-pane class="messaging-view hide">
+        <ion-view>
+            <ion-content>
+                <div class="row-sc1">
+                    <div class="row" style="padding-left:0;">
+                        <h4 class="col-50">Asunto</h4>
+                        <h4 class="col-50 reference"></h4>
+                    </div>
+                    <label class="item item-input">
+                        <input type="text" class="PropertyName" disabled>
+                    </label>
+                    <h4>Precio</h4>
+                    <label class="item item-input">
+                        <input type="text" class="PropertyPrice" disabled>
+                    </label>
+                    <h4>Mi nº de telefono</h4>
+                    <label class="item item-input">
+                        <input type="number" class="Mobile">
+                    </label>
+                    <br />
+                    <h4>Día y hora preferida</h4>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-50">
+                                <!--<div class="row" id="DateDemo">
+                                    <input type="text" id="dd" name="dd" data-format="MM/DD/YYYY" placeholder="fecha" class="col-80" />
+                                    <span class="input-group-btn">
+                                        <button class="button button-small col-20" type="button" style="padding: 0;"><i class="ion-ios-calendar-outline" style="color:#797979"></i></button>
+                                    </span>
+                                </div>-->
+
+                                <ion-list>
+                                    <div class="item" ion-datetime-picker ng-model="datetimeValue" min="minDate" id="dd">
+                                        {{datetimeValue| date: "MM/dd/yyyy"}}
+                                    </div>
+                                </ion-list>
+                            </div>
+                            <label class="item item-input item-select col-50" style="border-width: 0px !important;">
+                                <select id="time">
+                                    <option>hora</option>
+
+                                    <option>9:00</option>
+                                    <option>9:30</option>
+
+                                    <option>10:00</option>
+                                    <option>10:30</option>
+                                    <option>11:00</option>
+                                    <option>11:30</option>
+
+                                    <option>12:00</option>
+                                    <option>12:30</option>
+                                    <option>13:00</option>
+                                    <option>13:30</option>
+
+                                    <option>14:00</option>
+                                    <option>14:30</option>
+                                    <option>15:00</option>
+                                    <option>15:30</option>
+
+                                    <option>16:00</option>
+                                    <option>16:30</option>
+                                    <option>17:00</option>
+                                    <option>17:30</option>
+
+                                    <option>18:00</option>
+                                    <option>18:30</option>
+                                    <option>19:00</option>
+                                </select>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <h4>Su pregunta o comentario</h4>
+                    <label class="item item-input">
+                        <textarea rows="4" cols="50" class="comment"></textarea>
+                    </label>
+                    <button class="button button-full button-balanced" ng-click="scheduleCall()">
+                        Enviar
+                    </button>
+                    <button class="button button-full button-assertive" ng-click="Back()">
+                        Cancelar
+                    </button>
+                </div>
+                <div class="overlay">
+                    <div id="loading-img"></div>
+                </div>
+            </ion-content>
+        </ion-view>
+        <style>
+            .item-select select {
+        max-width: 100%;
+    }
+            .dropdown-menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                z-index: 1000;
+                display: none;
+                float: left;
+                min-width: 160px;
+                padding: 5px 0;
+                margin: 2px 0 0;
+                list-style: none;
+                font-size: 14px;
+                background-color: #fff;
+                border: 1px solid rgba(0,0,0,.15);
+                border-radius: 4px;
+                -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+                box-shadow: 0 6px 12px rgba(0,0,0,.175);
+                background-clip: padding-box;
+            }
+
+            .bootstrap-datetimepicker-widget.bottom:after, .bootstrap-datetimepicker-widget.bottom:before, .bootstrap-datetimepicker-widget.top:after, .bootstrap-datetimepicker-widget.top:before {
+                display: inline-block;
+                position: absolute;
+                content: '';
+            }
+
+            .bootstrap-datetimepicker-widget {
+                top: 0;
+                left: 0;
+                width: 250px;
+                padding: 4px;
+                margin-top: 1px;
+                z-index: 99999;
+                border-radius: 4px;
+            }
+
+                .bootstrap-datetimepicker-widget.bottom:before {
+                    border-left: 7px solid transparent;
+                    border-right: 7px solid transparent;
+                    border-bottom: 7px solid #ccc;
+                    border-bottom-color: rgba(0,0,0,.2);
+                    top: -7px;
+                    left: 7px;
+                }
+
+                .bootstrap-datetimepicker-widget.bottom:after {
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-bottom: 6px solid #fff;
+                    top: -6px;
+                    left: 8px;
+                }
+
+                .bootstrap-datetimepicker-widget.top:before {
+                    border-left: 7px solid transparent;
+                    border-right: 7px solid transparent;
+                    border-top: 7px solid #ccc;
+                    border-top-color: rgba(0,0,0,.2);
+                    bottom: -7px;
+                    left: 6px;
+                }
+
+                .bootstrap-datetimepicker-widget.top:after {
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top: 6px solid #fff;
+                    bottom: -6px;
+                    left: 7px;
+                }
+
+                .bootstrap-datetimepicker-widget .dow {
+                    width: 14.2857%;
+                }
+
+                .bootstrap-datetimepicker-widget.pull-right:before {
+                    left: auto;
+                    right: 6px;
+                }
+
+                .bootstrap-datetimepicker-widget.pull-right:after {
+                    left: auto;
+                    right: 7px;
+                }
+
+                .bootstrap-datetimepicker-widget > ul {
+                    list-style-type: none;
+                    margin: 0;
+                }
+
+                .bootstrap-datetimepicker-widget .timepicker-hour, .bootstrap-datetimepicker-widget .timepicker-minute, .bootstrap-datetimepicker-widget .timepicker-second {
+                    width: 100%;
+                    font-size: 20px;
+                }
+
+                .bootstrap-datetimepicker-widget table[data-hour-format="12"] .separator {
+                    width: 4px;
+                    padding: 0;
+                    margin: 0;
+                }
+
+                .bootstrap-datetimepicker-widget .datepicker > div {
+                    display: none;
+                }
+
+                .bootstrap-datetimepicker-widget .picker-switch {
+                    text-align: center;
+                }
+
+                .bootstrap-datetimepicker-widget table {
+                    width: 100%;
+                    margin: 0;
+                }
+
+                .bootstrap-datetimepicker-widget td, .bootstrap-datetimepicker-widget th {
+                    text-align: center;
+                    border-radius: 4px;
+                }
+
+                    .bootstrap-datetimepicker-widget td.day:hover, .bootstrap-datetimepicker-widget td.hour:hover, .bootstrap-datetimepicker-widget td.minute:hover, .bootstrap-datetimepicker-widget td.second:hover {
+                        background: #eee;
+                        cursor: pointer;
+                    }
+
+                    .bootstrap-datetimepicker-widget td.new, .bootstrap-datetimepicker-widget td.old {
+                        color: #c7c7c7;
+                    }
+
+                    .bootstrap-datetimepicker-widget td.today {
+                        position: relative;
+                    }
+
+                        .bootstrap-datetimepicker-widget td.today:before {
+                            content: '';
+                            display: inline-block;
+                            border-left: 7px solid transparent;
+                            border-bottom: 7px solid #389b98;
+                            border-top-color: rgba(0,0,0,.2);
+                            position: absolute;
+                            bottom: 4px;
+                            right: 4px;
+                        }
+
+                    .bootstrap-datetimepicker-widget td.active.today:before {
+                        border-bottom-color: #fff;
+                    }
+
+                    .bootstrap-datetimepicker-widget td.active, .bootstrap-datetimepicker-widget td.active:hover {
+                        background-color: #389b98;
+                        color: #fff;
+                        text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+                    }
+
+                    .bootstrap-datetimepicker-widget td.disabled, .bootstrap-datetimepicker-widget td.disabled:hover {
+                        background: 0 0;
+                        color: #999;
+                        cursor: not-allowed;
+                    }
+
+                    .bootstrap-datetimepicker-widget td span {
+                        display: block;
+                        width: 47px;
+                        float: left;
+                        margin: 2px;
+                        cursor: pointer;
+                        border-radius: 4px;
+                        padding: 5px 0;
+                    }
+
+                        .bootstrap-datetimepicker-widget td span.disabled, .bootstrap-datetimepicker-widget td span.disabled:hover, .bootstrap-datetimepicker-widget th.disabled, .bootstrap-datetimepicker-widget th.disabled:hover {
+                            cursor: not-allowed;
+                            background: 0 0;
+                            color: #999;
+                        }
+
+                        .bootstrap-datetimepicker-widget td span:hover {
+                            background: #eee;
+                        }
+
+                        .bootstrap-datetimepicker-widget td span.active {
+                            background-color: #428bca;
+                            color: #fff;
+                            text-shadow: 0 -1px 0 rgba(0,0,0,.25);
+                        }
+
+                        .bootstrap-datetimepicker-widget td span.old {
+                            color: #999;
+                        }
+
+                    .bootstrap-datetimepicker-widget th.switch {
+                        width: 145px;
+                    }
+
+                    .bootstrap-datetimepicker-widget th.next, .bootstrap-datetimepicker-widget th.prev {
+                        font-size: 21px;
+                    }
+
+                .bootstrap-datetimepicker-widget thead tr:first-child th {
+                    cursor: pointer;
+                }
+
+                    .bootstrap-datetimepicker-widget thead tr:first-child th:hover {
+                        background: #eee;
+                    }
+
+            .input-group.date .input-group-addon span {
+                display: block;
+                cursor: pointer;
+                width: 16px;
+                height: 16px;
+            }
+
+            .bootstrap-datetimepicker-widget.left-oriented:before {
+                left: auto;
+                right: 6px;
+            }
+
+            .bootstrap-datetimepicker-widget.left-oriented:after {
+                left: auto;
+                right: 7px;
+            }
+
+            .bootstrap-datetimepicker-widget ul.list-unstyled li.in div.timepicker div.timepicker-picker table.table-condensed tbody > tr > td {
+                padding: 0;
+            }
+
+            .btn-time, .btn-time:focus {
+                color: #389b98;
+                text-decoration: none;
+                background-color: transparent;
+            }
+
+                .btn-time i {
+                    padding: 0 7px;
+                }
+
+                .btn-time:hover {
+                    color: #12615F;
+                    text-decoration: none;
+                    background-color: #eee;
+                }
+
+            .list-inset, .row-sc1 {
+                margin: 15px 10px;
+            }
+
+            .button.button-balanced {
+                background-color: #4caf50;
+            }
+        </style>
+        <script>
+    /**
+ * version 2.1.32 -- Modified
+ */
+    ; (function (factory) {
+        if (typeof define === 'function' && define.amd) {
+            // AMD is used - Register as an anonymous module.
+            define(['jquery', 'moment'], factory);
+        } else {
+            // AMD is not used - Attempt to fetch dependencies from scope.
+            if (!jQuery) {
+                throw 'bootstrap-datetimepicker requires jQuery to be loaded first';
+            } else if (!moment) {
+                throw 'bootstrap-datetimepicker requires moment.js to be loaded first';
+            } else {
+                factory(jQuery, moment);
+            }
+        }
+    }
+
+    (function ($, moment) {
+        if (typeof moment === 'undefined') {
+            alert("momentjs is requried");
+            throw new Error('momentjs is required');
+        };
+
+        var dpgId = 0,
+
+        pMoment = moment,
+
+    // ReSharper disable once InconsistentNaming
+        DateTimePicker = function (element, options) {
+            var defaults = {
+                pickDate: true,
+                pickTime: true,
+                useMinutes: true,
+                useSeconds: false,
+                useCurrent: true, /* RQI: Auto fill Current Date as Default when Showing */
+                minuteStepping: 1,
+                startDate: new pMoment({ y: 1970 }),
+                endDate: new pMoment().add(50, "y"),
+                showToday: true, /* RQI: Show Today */
+                collapse: true,
+                language: "en",
+                defaultDate: "",
+                disabledDates: [],
+                enabledDates: false,
+                icons: {},
+                useStrict: false,
+                direction: "auto"
+            },
+
+            icons = {
+                time: 'ion-ios-clock-outline',
+                date: 'ion-ios-calendar-outline',
+                up: 'ion-arrow-up-b',
+                down: 'ion-arrow-down-b'
+            },
+
+            picker = this,
+
+            init = function () {
+
+                var icon = false, i, dDate, longDateFormat;
+                picker.options = $.extend({}, defaults, options);
+                picker.options.icons = $.extend({}, icons, picker.options.icons);
+
+                picker.element = $(element);
+
+                dataToOptions();
+
+                if (!(picker.options.pickTime || picker.options.pickDate))
+                    throw new Error('Must choose at least one picker');
+
+                picker.id = dpgId++;
+                pMoment.lang(picker.options.language);
+                picker.date = pMoment();
+                picker.unset = false;
+                //picker.isInput = picker.element.is('input');
+                picker.component = false;
+
+                //if (picker.element.hasClass('input-group')) {
+                //    if (picker.element.find('.datepickerbutton').size() == 0) {//in case there is more then one 'input-group-addon` #48
+                //        picker.component = picker.element.find("[class^='input-group-']");
+                //    }
+                //    else {
+                //        picker.component = picker.element.find('.datepickerbutton');
+                //    }
+                //}
+                picker.format = picker.options.format;
+
+                longDateFormat = pMoment()._lang._longDateFormat;
+
+                if (!picker.format) {
+                    if (picker.isInput) picker.format = picker.element.data('format');
+                    else picker.format = picker.element.find('input').data('format');
+                    if (!picker.format) {
+                        picker.format = (picker.options.pickDate ? longDateFormat.L : '');
+                        if (picker.options.pickDate && picker.options.pickTime) picker.format += ' ';
+                        picker.format += (picker.options.pickTime ? longDateFormat.LT : '');
+                        if (picker.options.useSeconds) {
+                            if (~longDateFormat.LT.indexOf(' A')) {
+                                picker.format = picker.format.split(" A")[0] + ":ss A";
+                            }
+                            else {
+                                picker.format += ':ss';
+                            }
+                        }
+                    }
+                }
+
+                /* Monitor Manual Change */
+                picker.element.find('input').keyup(function () {
+                    var obj = $(this);
+                    setTimeout(function () {
+                        picker.unset = false;
+                        if (!picker.options.pickDate) {
+                            var newDate = "1/1/1900 " + obj.val();
+                            if (!pMoment.isMoment(newDate)) newDate = pMoment(newDate);
+                            if (newDate.isValid()) {
+                                console.newDate;
+                                picker.date = newDate;
+                                fillTime();
+                            }
+                        };
+                        if (!picker.options.pickTime) {
+                            var newDate = obj.val();
+                            if (!pMoment.isMoment(newDate)) newDate = pMoment(newDate);
+                            if (newDate.isValid()) {
+                                picker.date = newDate;
+                                picker.viewDate = pMoment({ y: picker.date.year(), M: picker.date.month(), d: picker.date.day() });
+                                fillDate();
+                            }
+                        }
+                    }, 200)
+                });
+
+                picker.options.use24hours = picker.format.toLowerCase().indexOf("a") < 1;
+
+                if (picker.component) icon = picker.component.find('span');
+
+                if (picker.options.pickTime) {
+                    if (icon) icon.addClass(picker.options.icons.time);
+                }
+                if (picker.options.pickDate) {
+                    if (icon) {
+                        icon.removeClass(picker.options.icons.time);
+                        icon.addClass(picker.options.icons.date);
+                    }
+                }
+
+                picker.widget = $(getTemplate(picker.options.pickDate, picker.options.pickTime, picker.options.collapse)).appendTo('body');
+                picker.minViewMode = picker.options.minViewMode || picker.element.data('date-minviewmode') || 0;
+                if (typeof picker.minViewMode === 'string') {
+                    switch (picker.minViewMode) {
+                        case 'months':
+                            picker.minViewMode = 1;
+                            break;
+                        case 'years':
+                            picker.minViewMode = 2;
+                            break;
+                        default:
+                            picker.minViewMode = 0;
+                            break;
+                    }
+                }
+                picker.viewMode = picker.options.viewMode || picker.element.data('date-viewmode') || 0;
+                if (typeof picker.viewMode === 'string') {
+                    switch (picker.viewMode) {
+                        case 'months':
+                            picker.viewMode = 1;
+                            break;
+                        case 'years':
+                            picker.viewMode = 2;
+                            break;
+                        default:
+                            picker.viewMode = 0;
+                            break;
+                    }
+                }
+
+                for (i = 0; i < picker.options.disabledDates.length; i++) {
+                    dDate = picker.options.disabledDates[i];
+                    dDate = pMoment(dDate);
+                    //if this is not a valid date then set it to the startdate -1 day so it's disabled.
+                    if (!dDate.isValid()) dDate = pMoment(picker.options.startDate).subtract(1, "day");
+                    picker.options.disabledDates[i] = dDate.format("L");
+                }
+
+                for (i = 0; i < picker.options.enabledDates.length; i++) {
+                    dDate = picker.options.enabledDates[i];
+                    dDate = pMoment(dDate);
+                    //if this is not a valid date then set it to the startdate -1 day so it's disabled.
+                    if (!dDate.isValid()) dDate = pMoment(picker.options.startDate).subtract(1, "day");
+                    picker.options.enabledDates[i] = dDate.format("L");
+                }
+                picker.startViewMode = picker.viewMode;
+                picker.setStartDate(picker.options.startDate || picker.element.data('date-startdate'));
+                picker.setEndDate(picker.options.endDate || picker.element.data('date-enddate'));
+                fillDow();
+                fillMonths();
+                fillHours();
+                fillMinutes();
+                fillSeconds();
+                update();
+                showMode();
+                attachDatePickerEvents();
+                if (picker.options.defaultDate !== "") picker.setValue(picker.options.defaultDate);
+                if (picker.options.minuteStepping !== 1) {
+                    var rMinutes = picker.date.minutes();
+
+                    var rInterval = picker.options.minuteStepping;
+                    picker.date.minutes((Math.round(rMinutes / rInterval) * rInterval) % 60)
+                               .seconds(0);
+                }
+            },
+
+            dataToOptions = function () {
+                //if (picker.element.is('input')) {
+                //     var eData = picker.element.data();
+                //}
+                //else {
+                var eData = picker.element.find('input').data();
+                //}
+
+                if (eData.pickdate !== undefined) picker.options.pickDate = eData.pickdate;
+                if (eData.picktime !== undefined) picker.options.pickTime = eData.picktime;
+                if (eData.useminutes !== undefined) picker.options.useMinutes = eData.useminutes;
+                if (eData.useseconds !== undefined) picker.options.useSeconds = eData.useseconds;
+                if (eData.minutestepping !== undefined) picker.options.minuteStepping = eData.minutestepping;
+                if (eData.startdate !== undefined) picker.options.startDate = eData.startdate;
+                if (eData.enddate !== undefined) picker.options.endDate = eData.enddate;
+                if (eData.collapse !== undefined) picker.options.collapse = eData.collapse;
+                if (eData.language !== undefined) picker.options.language = eData.language;
+                if (eData.defaultdate !== undefined) picker.options.defaultDate = eData.defaultdate;
+                if (eData.disableddates !== undefined) picker.options.disabledDates = eData.disableddates;
+                if (eData.enableddates !== undefined) picker.options.enabledDates = eData.enableddates;
+                if (eData.icons !== undefined) picker.options.icons = eData.icons;
+                if (eData.usestrict !== undefined) picker.options.useStrict = eData.usestrict;
+            },
+
+            place = function () {
+                var position = 'absolute',
+                offset = picker.component ? picker.component.offset() : picker.element.offset(), $window = $(window);
+                picker.width = picker.component ? picker.component.outerWidth() : picker.element.outerWidth();
+                offset.top = offset.top + picker.element.outerHeight();
+
+                /* RQI: Top or Bottom? */
+                var placePosition;
+                if (picker.options.direction === 'up') {
+                    placePosition = 'top'
+                } else if (picker.options.direction === 'bottom') {
+                    placePosition = 'bottom'
+                } else if (picker.options.direction === 'auto') {
+                    if (offset.top + picker.widget.height() > $window.height() + $window.scrollTop() && picker.widget.height() + picker.element.outerHeight() < offset.top) {
+                        placePosition = 'top';
+                    } else {
+                        placePosition = 'bottom';
+                    }
+                };
+                if (placePosition === 'top') {
+                    offset.top -= picker.widget.height() + picker.element.outerHeight() + 15;
+                    picker.widget.addClass('top').removeClass('bottom');
+                } else {
+                    offset.top += 1;
+                    picker.widget.addClass('bottom').removeClass('top');
+                }
+
+                if (picker.options.width !== undefined) {
+                    picker.widget.width(picker.options.width);
+                }
+
+                if (picker.options.orientation === 'left') {
+                    picker.widget.addClass('left-oriented');
+                    offset.left = offset.left - picker.widget.width() + 20;
+                }
+
+                if (isInFixed()) {
+                    position = 'fixed';
+                    offset.top -= $window.scrollTop();
+                    offset.left -= $window.scrollLeft();
+                }
+
+                if ($window.width() < offset.left + picker.widget.outerWidth()) {
+                    offset.right = $window.width() - offset.left - picker.width;
+                    offset.left = 'auto';
+                    picker.widget.addClass('pull-right');
+                } else {
+                    offset.right = 'auto';
+                    picker.widget.removeClass('pull-right');
+                }
+
+                picker.widget.css({
+                    position: position,
+                    top: offset.top,
+                    left: offset.left,
+                    right: offset.right
+                });
+            },
+
+            notifyChange = function (oldDate, eventType) {
+                picker.element.trigger({
+                    type: 'change.dp',
+                    date: pMoment(picker.date),
+                    oldDate: pMoment(oldDate)
+                });
+
+                if (eventType !== 'change')
+                    picker.element.change();
+            },
+
+            notifyError = function (date) {
+                picker.element.trigger({
+                    type: 'error.dp',
+                    date: pMoment(date)
+                });
+            },
+
+            update = function (newDate) {
+                pMoment.lang(picker.options.language);
+                var dateStr = newDate;
+                if (!dateStr) {
+                    if (picker.isInput) {
+                        dateStr = picker.element.val();
+                    } else {
+                        dateStr = picker.element.find('input').val();
+                    }
+                    if (dateStr) picker.date = pMoment(dateStr, picker.format, picker.options.useStrict);
+                    if (!picker.date) picker.date = pMoment();
+                }
+                picker.viewDate = pMoment(picker.date).startOf("month");
+                fillDate();
+                fillTime();
+            },
+
+            fillDow = function () {
+                pMoment.lang(picker.options.language);
+                var html = $('<tr>'), weekdaysMin = pMoment.weekdaysMin(), i;
+                if (pMoment()._lang._week.dow == 0) { // starts on Sunday
+                    for (i = 0; i < 7; i++) {
+                        html.append('<th class="dow">' + weekdaysMin[i] + '</th>');
+                    }
+                } else {
+                    for (i = 1; i < 8; i++) {
+                        if (i == 7) {
+                            html.append('<th class="dow">' + weekdaysMin[0] + '</th>');
+                        } else {
+                            html.append('<th class="dow">' + weekdaysMin[i] + '</th>');
+                        }
+                    }
+                }
+                picker.widget.find('.datepicker-days thead').append(html);
+            },
+
+            fillMonths = function () {
+                pMoment.lang(picker.options.language);
+                var html = '', i = 0, monthsShort = pMoment.monthsShort();
+                while (i < 12) {
+                    html += '<span class="month">' + monthsShort[i++] + '</span>';
+                }
+                picker.widget.find('.datepicker-months td').append(html);
+            },
+
+            fillDate = function () {
+                pMoment.lang(picker.options.language);
+                var year = picker.viewDate.year(),
+                    month = picker.viewDate.month(),
+                    startYear = picker.options.startDate.year(),
+                    startMonth = picker.options.startDate.month(),
+                    endYear = picker.options.endDate.year(),
+                    endMonth = picker.options.endDate.month(),
+                    prevMonth, nextMonth, html = [], row, clsName, i, days, yearCont, currentYear, months = pMoment.months();
+
+                picker.widget.find('.datepicker-days').find('.disabled').removeClass('disabled');
+                picker.widget.find('.datepicker-months').find('.disabled').removeClass('disabled');
+                picker.widget.find('.datepicker-years').find('.disabled').removeClass('disabled');
+
+                picker.widget.find('.datepicker-days th:eq(1)').text(
+                    months[month] + ' ' + year);
+
+                prevMonth = pMoment(picker.viewDate).subtract("months", 1);
+                days = prevMonth.daysInMonth();
+                prevMonth.date(days).startOf('week');
+                if ((year == startYear && month <= startMonth) || year < startYear) {
+                    picker.widget.find('.datepicker-days th:eq(0)').addClass('disabled');
+                }
+                if ((year == endYear && month >= endMonth) || year > endYear) {
+                    picker.widget.find('.datepicker-days th:eq(2)').addClass('disabled');
+                }
+
+                nextMonth = pMoment(prevMonth).add(42, "d");
+                while (prevMonth.isBefore(nextMonth)) {
+                    if (prevMonth.weekday() === pMoment().startOf('week').weekday()) {
+                        row = $('<tr>');
+                        html.push(row);
+                    }
+                    clsName = '';
+                    if (prevMonth.year() < year || (prevMonth.year() == year && prevMonth.month() < month)) {
+                        clsName += ' old';
+                    } else if (prevMonth.year() > year || (prevMonth.year() == year && prevMonth.month() > month)) {
+                        clsName += ' new';
+                    }
+                    if (prevMonth.isSame(pMoment({ y: picker.date.year(), M: picker.date.month(), d: picker.date.date() }))) {
+                        clsName += ' active';
+                    }
+                    if (isInDisableDates(prevMonth) || !isInEnableDates(prevMonth)) {
+                        clsName += ' disabled';
+                    }
+                    /* RQI - Today */
+                    if (picker.options.showToday === true) {
+                        if (prevMonth.isSame(pMoment(new Date()), 'day')) {
+                            clsName += ' today';
+                        }
+                    }
+                    row.append('<td class="day' + clsName + '">' + prevMonth.date() + '</td>');
+                    prevMonth.add(1, "d");
+                }
+                picker.widget.find('.datepicker-days tbody').empty().append(html);
+                currentYear = pMoment().year(), months = picker.widget.find('.datepicker-months')
+                    .find('th:eq(1)').text(year).end().find('span').removeClass('active');
+                if (currentYear === year) {
+                    months.eq(pMoment().month()).addClass('active');
+                }
+                if (currentYear - 1 < startYear) {
+                    picker.widget.find('.datepicker-months th:eq(0)').addClass('disabled');
+                }
+                if (currentYear + 1 > endYear) {
+                    picker.widget.find('.datepicker-months th:eq(2)').addClass('disabled');
+                }
+                for (i = 0; i < 12; i++) {
+                    if ((year == startYear && startMonth > i) || (year < startYear)) {
+                        $(months[i]).addClass('disabled');
+                    } else if ((year == endYear && endMonth < i) || (year > endYear)) {
+                        $(months[i]).addClass('disabled');
+                    }
+                }
+
+                html = '';
+                year = parseInt(year / 10, 10) * 10;
+                yearCont = picker.widget.find('.datepicker-years').find(
+                    'th:eq(1)').text(year + '-' + (year + 9)).end().find('td');
+                picker.widget.find('.datepicker-years').find('th').removeClass('disabled');
+                if (startYear > year) {
+                    picker.widget.find('.datepicker-years').find('th:eq(0)').addClass('disabled');
+                }
+                if (endYear < year + 9) {
+                    picker.widget.find('.datepicker-years').find('th:eq(2)').addClass('disabled');
+                }
+                year -= 1;
+                for (i = -1; i < 11; i++) {
+                    html += '<span class="year' + (i === -1 || i === 10 ? ' old' : '') + (currentYear === year ? ' active' : '') + ((year < startYear || year > endYear) ? ' disabled' : '') + '">' + year + '</span>';
+                    year += 1;
+                }
+                yearCont.html(html);
+            },
+
+            fillHours = function () {
+                pMoment.lang(picker.options.language);
+                var table = picker.widget.find('.timepicker .timepicker-hours table'), html = '', current, i, j;
+                table.parent().hide();
+                if (picker.options.use24hours) {
+                    current = 0;
+                    for (i = 0; i < 6; i += 1) {
+                        html += '<tr>';
+                        for (j = 0; j < 4; j += 1) {
+                            html += '<td class="hour">' + padLeft(current.toString()) + '</td>';
+                            current++;
+                        }
+                        html += '</tr>';
+                    }
+                }
+                else {
+                    current = 1;
+                    for (i = 0; i < 3; i += 1) {
+                        html += '<tr>';
+                        for (j = 0; j < 4; j += 1) {
+                            html += '<td class="hour">' + padLeft(current.toString()) + '</td>';
+                            current++;
+                        }
+                        html += '</tr>';
+                    }
+                }
+                table.html(html);
+            },
+
+            fillMinutes = function () {
+
+                var table = picker.widget.find('.timepicker .timepicker-minutes table'), html = '', current = 0, i, j;
+                table.parent().hide();
+                for (i = 0; i < 1; i++) {
+                    html += '<tr>';
+                    for (j = 0; j < 2; j += 1) {
+                        html += '<td class="minute">' + padLeft(current.toString()) + '</td>';
+                        current += 30;
+                    }
+                    html += '</tr>';
+                }
+                table.html(html);
+            },
+
+            fillSeconds = function () {
+                var table = picker.widget.find('.timepicker .timepicker-seconds table'), html = '', current = 0, i, j;
+                table.parent().hide();
+                for (i = 0; i < 5; i++) {
+                    html += '<tr>';
+                    for (j = 0; j < 4; j += 1) {
+                        html += '<td class="second">' + padLeft(current.toString()) + '</td>';
+                        current += 3;
+                    }
+                    html += '</tr>';
+                }
+                table.html(html);
+            },
+
+            fillTime = function () {
+                if (!picker.date) return;
+                var timeComponents = picker.widget.find('.timepicker span[data-time-component]'),
+                hour = picker.date.hours(),
+                period = 'AM';
+                if (!picker.options.use24hours) {
+                    if (hour >= 12) period = 'PM';
+                    if (hour === 0) hour = 12;
+                    else if (hour != 12) hour = hour % 12;
+                    picker.widget.find('.timepicker [data-action=togglePeriod]').text(period);
+                }
+                timeComponents.filter('[data-time-component=hours]').text(padLeft(hour));
+                timeComponents.filter('[data-time-component=minutes]').text(padLeft(picker.date.minutes()));
+                timeComponents.filter('[data-time-component=seconds]').text(padLeft(picker.date.second()));
+            },
+
+            click = function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                picker.unset = false;
+                var target = $(e.target).closest('span, td, th'), month, year, step, day, oldDate = pMoment(picker.date);
+                if (target.length === 1) {
+                    if (!target.is('.disabled')) {
+                        switch (target[0].nodeName.toLowerCase()) {
+                            case 'th':
+                                switch (target[0].className) {
+                                    case 'switch':
+                                        showMode(1);
+                                        break;
+                                    case 'prev':
+                                    case 'next':
+                                        step = dpGlobal.modes[picker.viewMode].navStep;
+                                        if (target[0].className === 'prev') step = step * -1;
+                                        picker.viewDate.add(step, dpGlobal.modes[picker.viewMode].navFnc);
+                                        fillDate();
+                                        break;
+                                }
+                                break;
+                            case 'span':
+                                if (target.is('.month')) {
+                                    month = target.parent().find('span').index(target);
+                                    picker.viewDate.month(month);
+                                } else {
+                                    year = parseInt(target.text(), 10) || 0;
+                                    picker.viewDate.year(year);
+                                }
+                                if (picker.viewMode === picker.minViewMode) {
+                                    picker.date = pMoment({
+                                        y: picker.viewDate.year(),
+                                        M: picker.viewDate.month(),
+                                        d: picker.viewDate.date(),
+                                        h: picker.date.hours(),
+                                        m: picker.date.minutes()
+                                    });
+                                    notifyChange(oldDate, e.type);
+                                }
+                                showMode(-1);
+                                fillDate();
+                                break;
+                            case 'td':
+                                if (target.is('.day')) {
+                                    day = parseInt(target.text(), 10) || 1;
+                                    month = picker.viewDate.month();
+                                    year = picker.viewDate.year();
+                                    if (target.is('.old')) {
+                                        if (month === 0) {
+                                            month = 11;
+                                            year -= 1;
+                                        } else {
+                                            month -= 1;
+                                        }
+                                    } else if (target.is('.new')) {
+                                        if (month == 11) {
+                                            month = 0;
+                                            year += 1;
+                                        } else {
+                                            month += 1;
+                                        }
+                                    }
+                                    picker.date = pMoment({
+                                        y: year,
+                                        M: month,
+                                        d: day,
+                                        h: picker.date.hours(),
+                                        m: picker.date.minutes()
+                                    }
+                                    );
+                                    picker.viewDate = pMoment({
+                                        y: year, M: month, d: Math.min(28, day)
+                                    });
+                                    fillDate();
+                                    set();
+                                    notifyChange(oldDate, e.type);
+                                }
+                                break;
+                        }
+                    }
+                }
+            },
+
+            actions = {
+                incrementHours: function () {
+                    checkDate("add", "hours", 1);
+                },
+
+                incrementMinutes: function () {
+                    checkDate("add", "minutes", picker.options.minuteStepping);
+                },
+
+                incrementSeconds: function () {
+                    checkDate("add", "seconds", 1);
+                },
+
+                decrementHours: function () {
+                    checkDate("subtract", "hours", 1);
+                },
+
+                decrementMinutes: function () {
+                    checkDate("subtract", "minutes", picker.options.minuteStepping);
+                },
+
+                decrementSeconds: function () {
+                    checkDate("subtract", "seconds", 1);
+                },
+
+                togglePeriod: function () {
+                    var hour = picker.date.hours();
+                    if (hour >= 12) hour -= 12;
+                    else hour += 12;
+                    picker.date.hours(hour);
+                },
+
+                showPicker: function () {
+                    picker.widget.find('.timepicker > div:not(.timepicker-picker)').hide();
+                    picker.widget.find('.timepicker .timepicker-picker').show();
+                },
+
+                showHours: function () {
+                    picker.widget.find('.timepicker .timepicker-picker').hide();
+                    picker.widget.find('.timepicker .timepicker-hours').show();
+                },
+
+                showMinutes: function () {
+                    picker.widget.find('.timepicker .timepicker-picker').hide();
+                    picker.widget.find('.timepicker .timepicker-minutes').show();
+                },
+
+                showSeconds: function () {
+                    picker.widget.find('.timepicker .timepicker-picker').hide();
+                    picker.widget.find('.timepicker .timepicker-seconds').show();
+                },
+
+                selectHour: function (e) {
+                    picker.date.hours(parseInt($(e.target).text(), 10));
+                    actions.showPicker.call(picker);
+                },
+
+                selectMinute: function (e) {
+                    picker.date.minutes(parseInt($(e.target).text(), 10));
+                    actions.showPicker.call(picker);
+                },
+
+                selectSecond: function (e) {
+                    picker.date.seconds(parseInt($(e.target).text(), 10));
+                    actions.showPicker.call(picker);
+                }
+            },
+
+            doAction = function (e) {
+                var oldDate = pMoment(picker.date), action = $(e.currentTarget).data('action'), rv = actions[action].apply(picker, arguments);
+                stopEvent(e);
+                if (!picker.date) picker.date = pMoment({ y: 1970 });
+                set();
+                fillTime();
+                notifyChange(oldDate, e.type);
+                return rv;
+            },
+
+            stopEvent = function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+            },
+
+            change = function (e) {
+                pMoment.lang(picker.options.language);
+                var input = $(e.target), oldDate = pMoment(picker.date), newDate = pMoment(input.val(), picker.format, picker.options.useStrict);
+                if (newDate.isValid() && !isInDisableDates(newDate) && isInEnableDates(newDate)) {
+                    update();
+                    picker.setValue(newDate);
+                    notifyChange(oldDate, e.type);
+                    set();
+                }
+                else {
+                    picker.viewDate = oldDate;
+                    notifyChange(oldDate, e.type);
+                    notifyError(newDate);
+                    picker.unset = true;
+                }
+            },
+
+            showMode = function (dir) {
+                if (dir) {
+                    picker.viewMode = Math.max(picker.minViewMode, Math.min(2, picker.viewMode + dir));
+                }
+                picker.widget.find('.datepicker > div').hide().filter('.datepicker-' + dpGlobal.modes[picker.viewMode].clsName).show();
+            },
+
+            attachDatePickerEvents = function () {
+                var $this, $parent, expanded, closed, collapseData;
+                picker.widget.on('click', '.datepicker *', $.proxy(click, this)); // this handles date picker clicks
+                picker.widget.on('click', '[data-action]', $.proxy(doAction, this)); // this handles time picker clicks
+                picker.widget.on('mousedown', $.proxy(stopEvent, this));
+                if (picker.options.pickDate && picker.options.pickTime) {
+                    picker.widget.on('click.togglePicker', '.accordion-toggle', function (e) {
+                        e.stopPropagation();
+                        $this = $(this);
+                        $parent = $this.closest('ul');
+                        expanded = $parent.find('.in');
+                        closed = $parent.find('.collapse:not(.in)');
+
+                        if (expanded && expanded.length) {
+                            collapseData = expanded.data('collapse');
+                            if (collapseData && collapseData.transitioning) return;
+                            expanded.collapse('hide');
+                            closed.collapse('show');
+                            $this.find('span').toggleClass(picker.options.icons.time + ' ' + picker.options.icons.date);
+                            picker.element.find('.input-group-addon span').toggleClass(picker.options.icons.time + ' ' + picker.options.icons.date);
+                        }
+                    });
+                }
+                //if (picker.isInput) {
+                //    picker.element.on({
+                //        'focus': $.proxy(picker.show, this),
+                //        'change': $.proxy(change, this),
+                //        'blur': $.proxy(picker.hide, this)
+                //    });
+                //} else {
+                picker.element.on({
+                    'change': $.proxy(change, this)
+                }, 'input');
+                if (picker.component) {
+                    picker.component.on('click', $.proxy(picker.show, this));
+                } else {
+                    picker.element.on('click', $.proxy(picker.show, this));
+                }
+                //}
+            },
+
+            attachDatePickerGlobalEvents = function () {
+                $(window).on(
+                    'resize.datetimepicker' + picker.id, $.proxy(place, this));
+                if (!picker.isInput) {
+                    $(document).on(
+                        'mousedown.datetimepicker' + picker.id, $.proxy(picker.hide, this));
+                }
+            },
+
+            detachDatePickerEvents = function () {
+
+                picker.widget.off('click', '.datepicker *', picker.click);
+                picker.widget.off('click', '[data-action]');
+                picker.widget.off('mousedown', picker.stopEvent);
+                if (picker.options.pickDate && picker.options.pickTime) {
+                    picker.widget.off('click.togglePicker');
+                }
+                if (picker.isInput) {
+                    picker.element.off({
+                        'focus': picker.show,
+                        'change': picker.change
+                    });
+                } else {
+                    picker.element.off({
+                        'change': picker.change
+                    }, 'input');
+                    if (picker.component) {
+                        picker.component.off('click', picker.show);
+                    } else {
+                        picker.element.off('click', picker.show);
+                    }
+                }
+            },
+
+            detachDatePickerGlobalEvents = function () {
+                $(window).off('resize.datetimepicker' + picker.id);
+                if (!picker.isInput) {
+                    $(document).off('mousedown.datetimepicker' + picker.id);
+                }
+            },
+
+            isInFixed = function () {
+                if (picker.element) {
+                    var parents = picker.element.parents(), inFixed = false, i;
+                    for (i = 0; i < parents.length; i++) {
+                        if ($(parents[i]).css('position') == 'fixed') {
+                            inFixed = true;
+                            break;
+                        }
+                    }
+                    ;
+                    return inFixed;
+                } else {
+                    return false;
+                }
+            },
+
+            set = function () {
+                pMoment.lang(picker.options.language);
+                var formatted = '', input;
+                if (!picker.unset) formatted = pMoment(picker.date).format(picker.format);
+                input = picker.element.find('input');
+                input.val(formatted);
+                picker.element.val(formatted).change();
+                //if (!picker.isInput) {
+                //    if (picker.component) {
+                //        input = picker.element.find('input');
+                //        input.val(formatted);
+                //    }
+                //    picker.element.data('date', formatted);
+                //} else {
+                //    picker.element.val(formatted).change();
+                //}
+                if (!picker.options.pickTime) picker.hide();
+            },
+
+            checkDate = function (direction, unit, amount) {
+                pMoment.lang(picker.options.language);
+                var newDate;
+                if (direction == "add") {
+                    newDate = pMoment(picker.date);
+                    if (newDate.hours() == 23) newDate.add(amount, unit);
+                    newDate.add(amount, unit);
+                }
+                else {
+                    newDate = pMoment(picker.date).subtract(amount, unit);
+                }
+                if (isInDisableDates(pMoment(newDate.subtract(amount, unit))) || isInDisableDates(newDate)) {
+                    notifyError(newDate.format(picker.format));
+                    return;
+                }
+
+                if (direction == "add") {
+                    picker.date.add(amount, unit);
+                }
+                else {
+                    picker.date.subtract(amount, unit);
+                }
+                picker.unset = false;
+            },
+
+            isInDisableDates = function (date) {
+                pMoment.lang(picker.options.language);
+                if (date.isAfter(picker.options.endDate) || date.isBefore(picker.options.startDate)) return true;
+                var disabled = picker.options.disabledDates, i;
+                for (i in disabled) {
+                    if (disabled[i] == pMoment(date).format("L")) {
+                        return true;
+                    }
+                }
+                return false;
+            },
+
+            isInEnableDates = function (date) {
+                pMoment.lang(picker.options.language);
+                var enabled = picker.options.enabledDates, i;
+                if (enabled.length) {
+                    for (i in enabled) {
+                        if (enabled[i] == pMoment(date).format("L")) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                return enabled === false ? true : false;
+            },
+            padLeft = function (string) {
+                string = string.toString();
+                if (string.length >= 2) return string;
+                else return '0' + string;
+            },
+
+            getTemplate = function (pickDate, pickTime, collapse) {
+
+                if (pickDate && pickTime) {
+                    return (
+                        '<div class="bootstrap-datetimepicker-widget dropdown-menu" style="z-index:9999 !important;">' +
+                            '<ul class="list-unstyled">' +
+                                '<li' + (collapse ? ' class="collapse in"' : '') + '>' +
+                                    '<div class="datepicker">' + dpGlobal.template + '</div>' +
+                                '</li>' +
+                                '<li class="picker-switch accordion-toggle"><a class="btn" style="width:100%"><span class="' + picker.options.icons.time + '"></span></a></li>' +
+                                '<li' + (collapse ? ' class="collapse"' : '') + '>' +
+                                    '<div class="timepicker">' + tpGlobal.getTemplate() + '</div>' +
+                                '</li>' +
+                            '</ul>' +
+                        '</div>'
+                    );
+                } else if (pickTime) {
+                    return (
+                        '<div class="bootstrap-datetimepicker-widget dropdown-menu">' +
+                            '<div class="timepicker">' + tpGlobal.getTemplate() + '</div>' +
+                        '</div>'
+                    );
+                } else {
+                    return (
+                        '<div class="bootstrap-datetimepicker-widget dropdown-menu">' +
+                            '<div class="datepicker">' + dpGlobal.template + '</div>' +
+                        '</div>'
+                    );
+                }
+            },
+
+            dpGlobal = {
+                modes: [
+                    {
+                        clsName: 'days',
+                        navFnc: 'month',
+                        navStep: 1
+                    },
+                    {
+                        clsName: 'months',
+                        navFnc: 'year',
+                        navStep: 1
+                    },
+                    {
+                        clsName: 'years',
+                        navFnc: 'year',
+                        navStep: 10
+                    }],
+                headTemplate:
+                        '<thead>' +
+                            '<tr>' +
+                                '<th class="prev">&lsaquo;</th><th colspan="5" class="switch"></th><th class="next">&rsaquo;</th>' +
+                            '</tr>' +
+                        '</thead>',
+                contTemplate:
+            '<tbody><tr><td colspan="7"></td></tr></tbody>'
+            },
+
+            tpGlobal = {
+                hourTemplate: '<span data-action="showHours"   data-time-component="hours"   class="timepicker-hour"></span>',
+                minuteTemplate: '<span data-action="showMinutes" data-time-component="minutes" class="timepicker-minute"></span>',
+                secondTemplate: '<span data-action="showSeconds"  data-time-component="seconds" class="timepicker-second"></span>'
+            };
+
+            dpGlobal.template =
+                '<div class="datepicker-days">' +
+                    '<table class="table-condensed">' + dpGlobal.headTemplate + '<tbody></tbody></table>' +
+                '</div>' +
+                '<div class="datepicker-months">' +
+                    '<table class="table-condensed">' + dpGlobal.headTemplate + dpGlobal.contTemplate + '</table>' +
+                '</div>' +
+                '<div class="datepicker-years">' +
+                    '<table class="table-condensed">' + dpGlobal.headTemplate + dpGlobal.contTemplate + '</table>' +
+                '</div>';
+
+            tpGlobal.getTemplate = function () {
+                return (
+                    '<div class="timepicker-picker">' +
+                        '<table class="table-condensed">' +
+                            '<tr>' +
+                                '<td><button type="button" class="btn btn-time" data-action="incrementHours"><i class="ion-arrow-up-b"></i></button></td>' +
+                                '<td class="separator"></td>' +
+                                '<td>' + (picker.options.useMinutes ? '<button type="button" class="btn btn-time" data-action="incrementMinutes"><i class="ion-arrow-up-b"></i></button>' : '') + '</td>' +
+                                (picker.options.useSeconds ?
+                                    '<td class="separator"></td><td><button type="button" class="btn btn-time" data-action="incrementSeconds"><i class="ion-arrow-up-b"></i></button></td>' : '') +
+                                (picker.options.use24hours ? '' : '<td class="separator"></td>') +
+                            '</tr>' +
+                            '<tr>' +
+                                '<td>' + tpGlobal.hourTemplate + '</td> ' +
+                                '<td class="separator">:</td>' +
+                                '<td>' + (picker.options.useMinutes ? tpGlobal.minuteTemplate : '<span class="timepicker-minute">00</span>') + '</td> ' +
+                                (picker.options.useSeconds ?
+                                    '<td class="separator">:</td><td>' + tpGlobal.secondTemplate + '</td>' : '') +
+                                (picker.options.use24hours ? '' : '<td class="separator"></td>' +
+                                '<td><button type="button" class="btn" data-action="togglePeriod"></button></td>') +
+                            '</tr>' +
+                            '<tr>' +
+                                '<td><button type="button" class="btn btn-time" data-action="decrementHours"><i class="ion-arrow-down-b"></i></a></td>' +
+                                '<td class="separator"></td>' +
+                                '<td>' + (picker.options.useMinutes ? '<button type="button" class="btn btn-time" data-action="decrementMinutes"><i class="ion-arrow-down-b"></i></button>' : '') + '</td>' +
+                                (picker.options.useSeconds ?
+                                    '<td class="separator"></td><td><button type="button" class="btn btn-time" data-action="decrementSeconds"><i class="ion-arrow-down-b"></i></button></td>' : '') +
+                                (picker.options.use24hours ? '' : '<td class="separator"></td>') +
+                            '</tr>' +
+                        '</table>' +
+                    '</div>' +
+                    '<div class="timepicker-hours" data-action="selectHour">' +
+                        '<table class="table-condensed"></table>' +
+                    '</div>' +
+                    '<div class="timepicker-minutes" data-action="selectMinute">' +
+                        '<table class="table-condensed"></table>' +
+                    '</div>' +
+                    (picker.options.useSeconds ?
+                        '<div class="timepicker-seconds" data-action="selectSecond"><table class="table-condensed"></table></div>' : '')
+                );
+            };
+
+            picker.destroy = function () {
+                detachDatePickerEvents();
+                detachDatePickerGlobalEvents();
+                picker.widget.remove();
+                picker.element.removeData('DateTimePicker');
+                if (picker.component)
+                    picker.component.removeData('DateTimePicker');
+            };
+
+            picker.show = function (e) {
+                /* RQI - Use Current Value as Default */
+                if (picker.options.useCurrent === true) {
+                    var obj = picker.element.find('input');
+                    if (obj.val() == '') {
+                        picker.setValue(new Date())
+                    };
+                }
+                picker.widget.show();
+                picker.height = picker.component ? picker.component.outerHeight() : picker.element.outerHeight();
+                place();
+                picker.element.trigger({
+                    type: 'show.dp',
+                    date: pMoment(picker.date)
+                });
+                attachDatePickerGlobalEvents();
+                if (e) {
+                    stopEvent(e);
+                }
+            },
+
+            picker.disable = function () {
+                var input = picker.element.find('input');
+                if (input.prop('disabled')) return;
+
+                input.prop('disabled', true);
+                detachDatePickerEvents();
+            },
+
+            picker.enable = function () {
+                var input = picker.element.find('input');
+                if (!input.prop('disabled')) return;
+
+                input.prop('disabled', false);
+                attachDatePickerEvents();
+            },
+
+            picker.hide = function (event) {
+                if (event && $(event.target).is(picker.element.attr("id")))
+                    return;
+                // Ignore event if in the middle of a picker transition
+                var collapse = picker.widget.find('.collapse'), i, collapseData;
+                for (i = 0; i < collapse.length; i++) {
+                    collapseData = collapse.eq(i).data('collapse');
+                    if (collapseData && collapseData.transitioning)
+                        return;
+                }
+                picker.widget.hide();
+                picker.viewMode = picker.startViewMode;
+                showMode();
+                picker.element.trigger({
+                    type: 'hide.dp',
+                    date: pMoment(picker.date)
+                });
+                detachDatePickerGlobalEvents();
+            },
+
+            picker.setValue = function (newDate) {
+                pMoment.lang(picker.options.language);
+                if (!newDate) {
+                    picker.unset = true;
+                    set();
+                } else {
+                    picker.unset = false;
+                }
+                if (!pMoment.isMoment(newDate)) newDate = pMoment(newDate);
+                if (newDate.isValid()) {
+                    picker.date = newDate;
+                    set();
+                    picker.viewDate = pMoment({ y: picker.date.year(), M: picker.date.month() });
+                    fillDate();
+                    fillTime();
+                }
+                else {
+                    notifyError(newDate);
+                }
+            },
+
+            picker.getDate = function () {
+                if (picker.unset) return null;
+                return picker.date;
+            },
+
+            picker.setDate = function (date) {
+                if (!date) {
+                    picker.setValue(null);
+                } else {
+                    picker.setValue(pMoment(date));
+                }
+            },
+
+            picker.setEnabledDates = function (dates) {
+                if (!dates) picker.options.enabledDates = false;
+                else picker.options.enabledDates = dates;
+                if (picker.viewDate) update();
+            },
+
+            picker.setEndDate = function (date) {
+                if (date == undefined) return;
+                picker.options.endDate = pMoment(date);
+                if (picker.viewDate) update();
+            },
+
+            picker.setStartDate = function (date) {
+                if (date == undefined) return;
+                picker.options.startDate = pMoment(date);
+                if (picker.viewDate) update();
+            };
+
+            init();
+        };
+
+        $.fn.datetimepicker = function (options) {
+            return this.each(function () {
+                var $this = $(this), data = $this.data('DateTimePicker');
+                if (!data) $this.data('DateTimePicker', new DateTimePicker(this, options));
+            });
+        };
+    }));
+
+
+    $(document).ready(function () {
+        $('#DateDemo').datetimepicker({
+            pickTime: false
+        });
+
+        $('#TimeDemo').datetimepicker({
+            pickDate: false,
+            minuteStepping: 30
+        })
+    });
+
+        </script>
+        
+    </ion-pane>
+    
+</ion-view>
+<script id="my-modal.html" type="text/ng-template">
+    <ion-modal-view>
+        <ion-content>
+            <div class="row" style="padding: 6%;">
+                <div class="col-50">
+                    <h2 class="gracias">Lo siento</h2>
+                    <h4 class="thankyou">Lo sentimos mucho. El inmueble ya no esta disponible.</h4>
+                    <button class="button button-small cancel" ng-click="closeModal()">CERRAR</button>
+                </div>
+                <div class="col-50">
+                    <img style="width:90%" src="data:image/false;base64,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" />
+                </div>
+            </div>
+        </ion-content>
+    </ion-modal-view>
+    <style>
+        .modal {
+            min-height: 50%;
+            background-color: rgba(41,83,133,.93);
+            border-radius: 5px;
+            width: 90%;
+            top: 25%;
+            left: 5%;
+        }
+
+        .gracias {
+            color: #00bff3;
+            font-weight: 700;
+            font-size: 25px;
+        }
+
+        .thankyou {
+            color: #fff;
+        }
+    </style>
+</script>
+<style>
+    .bold-sc {
+        font-weight: 700;
+        color: black;
+    }
+
+    .item-name, .ref {
+        margin-bottom: 0;
+    }
+
+    .overlay {
+        z-index: 2 !important;
+    }
+
+    .uppder-20-sc {
+        position: fixed;
+        top: 20px;
+    }
+
+    i.ion-android-star {
+        color: #edeb30 !important;
+    }
+
+    .button-positive, .destination-address {
+        background-color: #0763bb !important;
+        color: #fff !important;
+        text-align: center;
+    }
+
+    .row-sc {
+        margin-top: -15px !important;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 250px;
+    }
+
+    hr {
+        height: 15px;
+        color: #000;
+    }
+
+    .ion-android-star, .ion-android-star-outline {
+        font-size: 100px;
+        color: #000;
+    }
+
+    .options-inmueble, .options-vivienda {
+        margin-left: 5px;
+    }
+
+    .item-name {
+        padding-left: 0;
+        color: #252a73;
+        font-size: 16px;
+    }
+
+    .ref {
+        margin-top: 16px;
+    }
+
+    .pad-0 {
+        padding: 0;
+    }
+
+    .money {
+        color: #1a8cbf;
+    }
+
+    .tipo {
+        color: #000;
+    }
+
+    .f-left {
+        float: left;
+    }
+
+    .no-shadow {
+        box-shadow: none;
+    }
+
+    .arrow-down {
+        float: right;
+        color: #b5b2b2;
+    }
+
+    .scroll {
+        padding: 10px 0 50px !important;
+    }
+</style>
+
+
+   

@@ -1,0 +1,139 @@
+﻿<ion-view view-title="Property List">
+    <ion-content>
+        <div class="row">
+            <button id="list-view" class="col button button-light button-positive">
+                List view
+            </button>
+            <button id="map-view" class="col button button-light">
+                MAPA
+            </button>
+            <!--<select id="price-sort" class="form-control">
+                <option data-sorttype="ass" value="price">High To Low</option>
+                <option data-sorttype="dec" value="price">Low To High</option>
+                <option value="price">Random</option>
+            </select>-->
+        </div>
+        <div class="my-class">
+            <label class="item item-input item-select uniqueCities">
+                <span class="input-label">
+                    Localidad
+                </span>
+                <select id="uniqueCities">
+                    <option value="All">All</option>
+                    <option ng-repeat="city in outputCities" value="{{city}}">{{city}}</option>
+                </select>
+            </label>
+            <ion-slide-box ng-repeat="property in properties" class="element-item" value="{{property.sj_city}}" style="height:250px;overflow:hidden;width: 100%;">
+                <div>
+                    <ion-slide-box>
+                        <ion-slide ng-if="property.PrImagesList !=null" ng-repeat="img in property.PrImagesList">
+                            <div class="box blue home-hello">
+                                <div class="">
+                                    <img class="product-image" src="{{img.Body}}" ng-click="GoToSingleProperty(property,property.productid)" />
+                                </div>
+                            </div>
+                        </ion-slide>
+                        <ion-slide ng-if="property.PrImagesList.length == '0'">
+                            <div class="box blue home-hello">
+                                <div class="">
+                                    <img class="product-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAVQAAADhBAMAAABlzFD0AAAAKlBMVEXp6elSWFjLy8uChYWprKzY2dm8vr5fZWWWmZni4uJscHB3e3ufoqKNj5AgwipWAAADjElEQVR4Xu3VwWsjZRjH8d82SZpJI+wzM0mGxIVkdFcWEWaIrICXjJciXiYLruIpOeqpgyySW9KT4KV6CeglgcWzERD21v4H7X/k876TDtPNrQ0I8vvQvvDylsw39HkT/H8QERERERERERERERERERERERERERERERERERERERERERERUfgUxr6X4QX+I8PHeCRrABOJAMwCKOdU5I2eiRoDqPS070gAfCzyJM0PPBiOrIFYf9H0gBNJAcgA8RhGS6YAYhHvSyCJYF5F+fdP7QBY2tTYPus7UYtSqlznqS3pxtIpp1Z1i1kH+TKUxZ3UlazzVOkfKLUP1MSk1myakwVp7TTF0A3DMLWpfp6a9Af4Qaa/hcNgNyLH4ulisuMz4Ebmd1ITcc3JefiJTG9T9TWf3jvVkwEasomARu9qrqtMAcee5SoiA5Nak2vA2c6BRz5yM1+PWpLq2aX+Jv6d1M0vHmA3Mr5NfdCsdrIIkyCOgF/9SUfXAKqc+v72tXlIo3sBYNgppW6vNwuTaXNb3UavnFqXV5IeNNVNXCzbJjWZm2fN2u+m+t/0zUNOAihdi9QjGZi/js/sEKz8mkxLqRUPm0U+AN30MKkrz8kWJjVb6LOR5In29nh5al30xAbagCL1vZ722SulP0jaiKNS6qSDZJ5fq9flaxXdP7UqH0oaR6hLim2Up1ZelFNx1dlPzWNaOhXHfWzPgM0CM7eUulzrSOWpvfQwqU72WQBNbfbD8KptB0BjygOAk+5LQeUJVLM0AEs3fCZTtORruURdvgg/CopU1OQ8/KAHs6ndzA8zAEjE/uuGogK9VvupTvanoCqp/QAtUp1M1FqjftajihhpkVoVY2o3E/dAqStZmNSbH0ejz+WiIdO9VAx7glr2Frqsi9SqjEajWNPjnzzN6esuuyxSj3u63/x12NSqpJpqr6+TjZ1t8PzV0i99BfimSoBZ7/vaaTctUpvBbnZn0rGjCSRzm3oehvazAUPXbJ5t20j+DsPnD/wKcOF8Ck1tdHd34Q9Rb/N5iHapuBGgntnLXKSaGHsZm3YKxvai2VQReby5tu/GbvQs0dU9EuU9IFVp6srfXWp8JfIP3kn9XQB8m8mbiyLVDA3sxa9qSrVrThq921RXBvkbMZsX2Es9kKMUxj5ngAMiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIiIion8BBK6qMI1QKwAAAAAASUVORK5CYII=" ng-click="GoToSingleProperty(property,property.productid)" />
+                                </div>
+                            </div>
+                        </ion-slide>
+                    </ion-slide-box>
+
+
+                    <div class="detail">
+
+                        <div class="row">
+                            <div class="col item-name" style="color:white">
+                                <span class="item-id" style="color:rgb(1, 191, 242)">{{property.name}}</span><br>
+                                <span ng-if="property.price !=null" class="price">{{property.price}}&nbsp;&#8364;</span>
+                                <span ng-if="property.price ==null">Price is not available</span><br>
+                                <div class="row" style="padding:0">
+                                    <span class="col" style="padding:0">Ref.: {{property.sj_productnumber}}</span>
+                                    <span class="col" style="padding:0">{{property.sj_city}}</span>
+                                </div>
+                            </div>
+                            <div class="col white"><img class="bed-room" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAACO0lEQVRoQ+1Yi03DMBB9NwFsAJ0AmAA2ACagbMAGwAZlAtoJgA3oBJQJKBvABIdeeo6cHyFW3KbFJyHkxr68z91ZimBHQnaEBxKRoTmZHEmORFIglVYkYYPT/k9HVPUUwD6AY5PurCRhed2m8Gtpg1svAHyJyLwtgXve6IiqHgIg8AsDzvUmYgmAxJ4BzEWE60pUiKjqFYAbT3X/0DuVAlBQztuwEBE+bw1V9Z3l/rLTXB/VJCKpiYjM/Gc5EVVlWTwCcMp/G2CCfhURJlh7qCrLmNjc356BoDPXIpKJmhFR1bGR4PITwB2t/Ku662JnLrLUie/A3ksyU7Fe+LAf70WEmwYfqkqctwZ0RCJTAOyLBxFhb+RhJM/NVlfD/O8HeyKbMlaKL00N6Q71ldfDPiMRusG+GDkAZiHZFoh1sGkCgO4WGr/vvF41LUlEs2YR8Rv/zZtanA5sqGwMNoBjQ1IM1i8dZHDvScnh3vPm+MtEvMbnqB13nVY2ZViuHJ1ZI5YGSt95V0bUEKH6vAgvRYSXUOdQVTrzZBdYdturaqy8jUQqpdaZyQp4IU9dCfead+0v9HoxEfGG02/Nvt2lFWLzkM7kU2tIoEKw1F6IIYk2daaxRzYFKPS9iUiocrHOJUdiKRuaNzkSqlysc8mRWMqG5k2OhCoX61xyJJayoXmTI6HKxTqXHImlbGjeVkfchtAXxDrnf9q1D3/1H+gcgJ0jUlYgltJteZu+VFZKqynR0Ig04mwroW0h8gMVdwBnD4jp9AAAAABJRU5ErkJggg==" />&nbsp;&nbsp;{{property.sj_rooms}}</div>
+                            <div class="col white"><img class="bathroom" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAClUlEQVRoQ+2a/XHUMBDF36sAqIB0wFEBoQLSQeiApAJCBaSDkAoIFUAq4K6DUAFQwTLPs76RbdnyKMN5fRP94/uQbf20b1fSSkTwYmbPAbwD8B7AqTd3C+ALgFuSf/QbI3M4xHcAm5F2CuitYKKD/HSIHYArkncOJ8tcA3gJYEvydWgQWcHMZI2HVkKtZRxIFhHMZXiQKemb2RmAr41VovmIN+5D4tg/AHwiqWunuFV+h3N2M7vx6JTrX8FcZWAsFEgikymRKEJ1LGNm4UDUwDcFqd+TbMeSpmpEkKZnS4Vkx68jgiiUviqA7Eh2BsdwICVLjP0fEsTMNJJDI/XY5/BRyx1X8hLIxsyyn1cBUiOvcNJKpeTW2css9z2Zc4UbR/ZS6sss9z0sSI2swg2IfVmNSWmkXhxppREqkUxHalPyCjVprJVWex/dXGNr4sc+/1D3bwUya7J2qBbVvueoQObMOms76lD37cKt2WvJjwvEsxFKeJ3X9shC990CuOhkGtPUykKNqnnti2zud22hOF2/ZxfyNV2zxD1PIEv0+tQ7nyyyJos8+H5DtDbn2vOL5Ml+Gp/WMLM7369bA8g3ktofaUo//F4A+LwGimaXitRsJAuiHVTJ61lwmL8ATtLtuMGk0cy0mfIxOMhg0yc7+/VkQCkzvhTrICM/8JG2ZT6BjCixgaSyPtKLYAptimJRLKO99jOS6uBBKS6s3GcUzZYKALLCdW4jNKUpgqiyS01nQQ4dmi915qR/WKDKIgmIIASjgyy6/rdiZjowo9WqrhovmoMzU6VokV4CT2bejOm09LK5/5uZ/FPZnVbOzXmTx4Loga3j62BL1tnmNnJuPYfRmKZpiM6iTGZDixaZ++Kl6x0NyD+TfVDUxyu67wAAAABJRU5ErkJggg==" />&nbsp;&nbsp;{{property.sj_nofbathrooms}}</div>
+                        </div>
+                    </div>
+                    <div class="uppder-sc row">
+                        <div class="col">
+                            <a ng-if="property.youtube !=null" href="{{property.youtube}}"><img src="data:image/png;base64,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" /></a>
+                        </div>
+                        <div class="col-10">
+                            <i id={{property.productid}} class="ion-android-star-outline" ng-click="addToFavority(property)" style="color:white;font-size: 50px;"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </ion-slide-box>
+
+            <div class="card saveSearch" style="padding:8px">
+                <h4>Guardar Busqueda</h4>
+                <p>Los criterios de busqueda se guardan en su area privada. </p>
+                <div style="text-align: center;">
+                    <button class="button button-energized button-small" ng-click="saveMatch()" style="">GUARDAR BUSQUEDA</button>
+                </div>
+
+
+            </div>
+        </div>
+        <div id="map" style="width: 100%; height: 90%;"></div>
+        <!--Loader-->
+        <div class="overlay">
+            <div id="loading-img"></div>
+        </div>
+    </ion-content>
+
+</ion-view>
+
+<style>
+    .uppder-sc {
+        position: fixed;
+        top: 0;
+    }
+
+    i.ion-android-star {
+        color: #edeb30 !important;
+    }
+
+    #map {
+    }
+
+    .button-positive {
+        background-color: #0763bb !important;
+    }
+
+    .product-image {
+        width: 100%;
+        height: 250px;
+    }
+
+    .detail {
+        position: absolute;
+        bottom: 0;
+        background: rgba(1, 51, 110, 0.54);
+        width: 100%;
+    }
+
+    .white {
+        color: white;
+        max-width: 15%;
+    }
+
+    .bathroom, .bed-room {
+        width: 70%;
+        max-width: 30px;
+    }
+
+    .ion-android-star-outline {
+        font-size: 25px;
+    }
+
+    .element-item {
+        float: left;
+    }
+</style>

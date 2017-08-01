@@ -1,0 +1,108 @@
+﻿<ion-view view-title="Mi area privada">
+    <ion-content>
+        <div class="row marginbottom1px">
+
+            <back class="col-50">
+                <a href="mailto:ventas@sant-just.com?Subject=Solicitud%20APP-SJ." target="_top" style="color:white">
+                    <p></p><i class="ion-ios-email-outline font100"></i><p class="fontnext">Mandar email</p>
+                </a>
+            </back>
+
+            <hr />
+            <back class="col-50" ng-click="myRequests()">
+                <p></p><img class="font100" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAP1BMVEVHcEz///////////////////////////////////////////////////////////////////////////////9KjZoYAAAAFHRSTlMAz9DgUMBwEEDwYKC/IDCAsJB/X36OgKsAAAHsSURBVHhezZTbDqQgEESbOwjeZs7/f+smEIc4Qnbedk+iEklJddEo/wfhVVIqryA/syUqaZMfiQlnQ7COFCcu3mdJoC4bwXBKJWNG3uJBo2liAdw16UjH+9t1AQ4fgwQNqTT9x068PtVZwPj2pmog+RAW6QRrUNLJsDfBR+WfpRr6N/wjERiUa1HdKN+5J5pEqX7JCte8ero42OtT6+u6SRb0M3Hw4WlMS6Ng72WWUiPEz8pfSfcZBafIlsGHsEplldUa9MdXvq2e0Kl+bunbFxSAvqzmbqC1yRG2VJtrOwBjRd4G0H1THFEaq1eQfGt6tbUYGu6WhWEVkc2eCki5zW0a8iYSwIFb5AaIHFR0DzbsQKmzT0ACaLfb+0asO4SpJOJkgCNOJZ4sAzJ+KjnZZcDOOZNUBwMibigJIKnmbBWqSm2hxNZKw4Pj0WJM7VOA2AcixsjoeLqrjxUOh+uDih2ECX3QbvB4PTnl1tZbH1TCQHJUs1N2jkGSzH/s4cUo/4XpTzomWIYTjixDMm6TISsMrQVYZcLBPit9RiQNlgmJKFPcaJkdJ3Mi6eF6rYvMOSjyRZnl2H17ueF7fRPs16YtYOUvnCQrXZF6IHMyvK7xC7L8wA7GbyKbN+DlJ6KhgYnyKzZr0NnKv+YPMf4gM7mYrKwAAAAASUVORK5CYII=" />
+                <p class="fontnext">Mis solicitudes</p>
+            </back>
+        </div>
+        <div class="row marginbottom1px">
+            <back class="col-50" ng-click="editProfile()">
+                <p></p><img class="font100" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAAP1BMVEVHcEz///////////////////////////////////////////////////////////////////////////////9KjZoYAAAAFHRSTlMAYOAgwEAQ8DCggLDQf5DPr3BQT7W++CsAAAFVSURBVHhe1dTJbuswDEBRaqTkcej9/299D0gaVzJaOosuencCfGDCIix/ppDm/6X7wEUe+XIP5A00DsOweHRJd8SKHvKoAls2ycB0PlR2ZbNEgNKcFWu2nbF/62iQESdNBTVIvMwBBvEUgxhv+S0yckhTYjJvcui/ejVIIhpf/dLRX4NyGCT2gw1EkyRjUnthnLljDt8Y53FiNLZXB6OYTZTzUJjEbmH4eqhiV9Asz7JS5EaR9WnyRpQ7Zf95Nwktcqt4kii/Twp6TwQlyCMIcmlWnaWprOc4lbX0ogLNuocK03kvE9TQCQX86/wRgZrlVV6A7aMRxb1Inj1o7aYPVcHP+RRS9DnYruD3LJey86Duq6jP3SAm+aYUYe+ErKiTHzpi6cRib1MnAqT3hCyMbwqJ1j8hx04IP7aKtMImkwRIjbBzsCZTXLf3LSH+bSGTr65d13+G+RkKfiMoXwAAAABJRU5ErkJggg==" />
+                <p class="fontnext">Editar mis datos</p>
+            </back>
+            <hr />
+            <back class="col-50" ui-sref="app.favorateproperty">
+                <p></p><i class="ion-ios-star-outline font100"></i><p class="fontnext">Mis favoritos</p>
+            </back>
+        </div>
+        <div class="row marginbottom1px">
+            <back class="col-50" ui-sref="app.recentviewed">
+                <p></p><i class="ion-android-checkbox-outline font100"></i><p class="fontnext">Vistos recientemente</p>
+            </back>
+            <hr />
+            <back class="col-50" ng-click="MyPublished()">
+                <p></p><i class="ion-ios-upload-outline font100"></i><p class="fontnext">Mis publicaciones</p>
+            </back>
+        </div>
+        <div class="row marginbottom1px" id="contact">
+            <back class="col-50">
+                <p></p><img class="font100" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAMFBMVEVHcEz///////////////////////////////////////////////////////////9EPuwCAAAAD3RSTlMAkBBQ4DAg0MCPsKB/8EDCqp4bAAAAwklEQVR4Xu2UywnCQBRFn2gEUcQOFLQAsQHFBkwHrl1ZQkrQlW1YgnaiLYi/EJEjiYjBcM1GgoGc3RsOzNzL8CxOAUnIXrAPcijwO2HmXVffhBrA8i0k8AACLZSIaMmYc06D7oSLFNqMzXocpODRNytzlQJ0zKqgYqYL+grSHomImVZUkgWArz9Mg4itbhIA3WQTbq6zgb0QKtxdM2fHSMQccg6HKUchrJ8B6wRCWOCGg4MvhNdZfNBkL0BOhX/b1QUPyymitEUkpmQAAAAASUVORK5CYII=" />
+                <p class="fontnext">Contaco Sant Just</p>
+            </back>
+            <hr />
+
+            <back class="col-50">
+                <a class="rotater" href="tel:0034977371151" style="color:white">
+                    <p></p><i class="ion-ios-telephone-outline font100"></i><p class="fontnext">Llamar un agente</p>
+                </a>
+            </back>
+
+        </div>
+    </ion-content>
+</ion-view>
+<style>
+    back {
+        background-color: #223168;
+        color: white;
+        text-align: center;
+    }
+
+    .font100 {
+        font-size: 55px;
+    }
+
+    .fontnext {
+        color: white;
+    }
+
+    .marginbottom1px {
+        margin-bottom: 1px;
+    }
+
+    hr {
+        color: #73ceeb;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        document.addEventListener("deviceready", onDeviceReady, false);
+    });
+
+    function onDeviceReady() {
+        $('#contact').click(function () {
+            try {
+                var contact = navigator.contacts.create({ "displayName": "Sant Just" });
+                var phoneNumbers = [];
+                phoneNumbers[0] = new ContactField('mobile', '0034 977371151 ', true); // preferred number
+                var emails = [];
+                emails[0] = new ContactField('emails', 'ventas@sant-just.com', true);
+                contact.emails = emails;
+
+                var addresses = [];
+                addresses[0] = new ContactAddress('addresses', 'Avenida Pau Casals 113 La Pineda 43481 Tarragona Spain');
+                contact.addresses = addresses;
+
+                var urls = [];
+                urls[0] = new ContactField('other', 'ventas@sant-just.com', true);
+                contact.urls = urls;
+
+                contact.phoneNumbers = phoneNumbers;
+                contact.save();
+                alert("Contacto creado con exito! Por favor, verifique el contacto con el nombre 'Sant Just' en su lista de contactos ");
+            }
+            catch (err) {
+                alert("Plugin Error - " + err.message);
+            }
+
+        });
+    }
+</script>

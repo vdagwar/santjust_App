@@ -1,0 +1,68 @@
+<ion-side-menus enable-menu-with-back-views="true">
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-assertive-900" ng-class="{expanded: isExpanded, 'has-header-fab-left': hasHeaderFabLeft, 'has-header-fab-right': hasHeaderFabRight}" align-title="left">
+            <ion-nav-back-button class="no-text">
+            </ion-nav-back-button>
+            <ion-nav-buttons side="right">
+                <button class="button button-icon button-clear ion-android-more-vertical" menu-toggle="right"></button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+        <ion-nav-view name="fabContent"></ion-nav-view>
+        <ion-nav-view name="menuContent" ng-class="{expanded: isExpanded}"></ion-nav-view>
+    </ion-side-menu-content>
+    <ion-side-menu side="right">
+        <ion-header-bar class="dark-bg expanded">
+            <a nav-clear menu-close ui-sref="app.Entrance">
+                <span class="avatar" style="background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAADdmlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMzggNzkuMTU5ODI0LCAyMDE2LzA5LzE0LTAxOjA5OjAxICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ4bXAuZGlkOjgyNWUzN2FmLWQ0NjUtM2U0ZS05ODNhLWMxNzMyMDE2YjZkYyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpGNDUzRUZFNjFERjQxMUU3ODc0NTk3MDcyMTE2NzVBMCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGNDUzRUZFNTFERjQxMUU3ODc0NTk3MDcyMTE2NzVBMCIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ0MgMjAxNyAoV2luZG93cykiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4MjVlMzdhZi1kNDY1LTNlNGUtOTgzYS1jMTczMjAxNmI2ZGMiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6ODI1ZTM3YWYtZDQ2NS0zZTRlLTk4M2EtYzE3MzIwMTZiNmRjIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+KsjPBwAAAURQTFRFAgMDK01bb8fncs/tJzxrcs/tWqO8b8nmRX2QFSUtaLzZHCpOHSxP////LEd5L0p8K0R3NFaGaLraar3cME1+bcTha8DfZ7jXMlCBZbXVbsfkKkF0M1ODKT5yZLLSWZ3BYq/RWqDDTYWtNliIVpq/PmeUYKzNXqbJXKPGToiwQW2ZX6nLO2KQVJS6QXCcUpG3OFuKP2qXRXahSHymVZe8S4KrOV+NPGSSSn+oRHOeR3mjUIuyUY619/r85+3zyN7ql6/H8Pb5nb3UW4muTI21LFGD0+bwMl+PzNjkWXae1+LrZJm7+fv94OjvV6TIrsTXpc7hNWaVgrHMPnikg6fDc56+N22bwdLg6/P3isTcm8rfwNfkbrPScarJu87dU3+mfZa1hrrUS2yWY6DCqL7SWavOZIWqZpC0c9DvRX+pb7rYTX2mWvlyWgAAAA10Uk5TATDzxr/uov16E8KUizVqT1oAAAL9SURBVEjHlZJrU9pAFIaPrde2C9LWqq0FifECEqJcrAiEkESBIEQgXBWwirf2/3/vWSgki8wIzzCzZ/c872R3WQCA5YWl6Xg/hzasLC59n5KlhWX0PzyvTc/zMiyufZuBtXew9mU24POMwPokNpH1ycDmBLb/tK6am25aucd74H7NQ7NBCLm42Xa7W83tsSZsv+KhmSQEfxfuhxZJ3+yxXdgbp0j9q5sUJvZo4JBtw+EYA79YPKSJKwzss33YZyn+7vtY7KfoxtI3RVaAAwa+73to6T3ABGm0vawBXjsDnx9MPF5MpNs8Y3jBY0Po+5HhlPfQc9zzdsUDvIVQRr8lYBWh4MD3ExGbw0NkhNb3xYggCvftdvtexDJCEx7BkiIgDBGpr2iCxisXWF1KqTIuCteYyAsWII6QqC9qZRwLZXpDJCVqCRETHc2yIDHiuqH4EppySYguJGicKPdVn0bXNcuCuEXeF/dxdfRFI52vphtmvtHI+3x03QJ8FpyPyyucWeaUy4IUT8SraULqHF23AZydlw4xK5Veo1ox9LycJEklHuVYIGrnpU6SRkpSVbOSxTMkqxXTPGWMKJzaCasFvCI1WiBPnETwQ3UicWFGgbCds4pqKKdhPUkKYVVW0SfkqcIocGZH/RuM1c6ydbWarNdqQQNfq9INMQqEbATlrFpTdXRLVWKoHbq9WogFYjZqtyRdT2f9XeOpZNC/WlJL3VCMAYI2/F28+WwspBM9GMRrkh5LcscfZAC/nWM5K/tL9KhKJmjK3UyPmCXG8MMxQ6mUych0M8nHDJY9ovt3WQN2x8j1fXxQd5ndHm7QH2D78Ivl5L+PF2TodMgeZxgBAiwnAXxCo4yJjzy7m7ELcDKOK9eTBrp8d57rJ3ZsbTh6hWvr7vH29jYXON85GiQCLqsLOxNwnVNctBwmRj1wvYGTJjpbozlsvYUDE7prYziFjTdx3Mk552gGX9/GseqwJuCcEXA6ZgPmV2fCCSvzqz+mx/EJYG7+59SsfoR/D35d58OwvWQAAAAASUVORK5CYII='); background-size: cover;border-radius:0"></span>
+            </a>
+           
+            <h2>Sant Just</h2>
+        </ion-header-bar>
+        <ion-content class="stable-bg has-expanded-header">
+            <ion-list>
+                <ion-item nav-clear menu-close ui-sref="app.Entrance">
+                    Pagina principal
+                </ion-item>
+                 <ion-item nav-clear menu-close ui-sref="app.filter">
+                    Buscar inmueble
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="matchingProperty()">
+                    Busqueda guardada
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="propertyhome()">
+                     Inmuebles en venta
+                  </ion-item>
+                <ion-item nav-clear menu-close ui-sref="app.favorateproperty">
+                    Mis favoritos
+                </ion-item>
+                <ion-item nav-clear menu-close ui-sref="app.recentviewed">
+                    Vistos recientemente
+                </ion-item>
+                <ion-item nav-clear menu-close ui-sref="app.publishproperty">
+                    Publicar inmueble
+                </ion-item>
+                <ion-item nav-clear menu-close ui-sref="app.Admin">
+                    Mi area privada
+                </ion-item>
+                <!--<ion-item nav-clear menu-close ui-sref="app.MyPublished">
+                         Mis publicaciones
+                 </ion-item>-->
+
+                <ion-item class="login-menu" nav-clear menu-close ng-click="login()">
+                  Conectar
+                </ion-item>
+                <ion-item class="logout-menu" nav-clear menu-close ng-click="logout()">
+                    Desconectar
+                </ion-item>
+                <!--<ion-item nav-clear menu-close ng-click="myProfile()">
+                    Mi perfil
+                </ion-item>-->   
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>
+<style>
+    .login-menu,logout-menu{
+        display:none;
+    }
+</style>

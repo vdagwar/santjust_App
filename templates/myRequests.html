@@ -1,0 +1,52 @@
+<ion-view view-title="LLAMAME">
+    <ion-content>
+        <div class="card" id="{{myreq.phonecallGuid}}" ng-repeat="myreq in myrequests">
+            <div class="row">
+                <div class="col-50"><b>{{myreq.subject}}</b></div>
+                <div class="col-50" style="color:orangered" ng-if="myreq.status=='0'">esperando llamada</div> <!-- Abierto -->
+                <div class="col-50" style="color:green" ng-if="myreq.status=='1'">fue contactado</div><!-- Completado -->
+                <div class="col-50" style="color:red" ng-if="myreq.status=='2'">Cancelado</div><!-- Cancelado -->
+            </div>
+            <div class="row">
+                <div class="col-50">
+                    <div class="row" style="padding: 0;">
+                        <div class="col-25">
+                            <span>hora :</span>
+                        </div>
+                        <div class="col-75">
+                            <span>{{myreq.CallTime}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-50">
+                    <div class="row" style="padding: 0;">
+                        <div class="col-25">
+                            <span>Dia :</span>
+                        </div>
+                        <div class="col-75">
+                            <span>{{myreq.CallDate}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+            <div class="row">
+                <div class="col-50">Asunto : </div>
+                <a href="" ng-click="GoToSingleProperty(myreq.propertyGuid)" class="col-50">{{myreq.ProductName}}</a>
+            </div>
+            <div class="row">
+                <div class="col-50">Precio : </div>
+                <div class="col-50">{{myreq.price}}</div>
+            </div>
+            <div class="row">
+                <span class="col-50">{{myreq.Description}}</span>
+                <div class="col-50">
+                    <button class="button button-assertive button-small delete-button-sc" ng-click="deletescheduledcall(myreq.phonecallGuid)">Borrar</button>
+                </div>
+            </div>
+        </div>
+        <div class="overlay">
+            <div id="loading-img"></div>
+        </div>
+    </ion-content>
+</ion-view>
+<style>.delete-button-sc{padding: 0px 5px 0px 5px; height: 20px;font-size: 12px;}</style>

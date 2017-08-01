@@ -1,0 +1,45 @@
+<ion-modal-view>
+    <ion-header-bar>
+        <h1 class="title" style="color:black">Filter</h1>
+        <div class="buttons">
+            <button class="button button-clear icon ion-checkmark"
+                    ng-click="applyFilters()"
+                    style="color: #444;" id="applyFilters"></button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <div class="list">
+            <ion-item class="item-divider">Show Properties</ion-item>
+            <ion-checkbox id="piscina" ng-model="Piscina"><span style="top: 40%;position: absolute;">Piscina</span></ion-checkbox>
+            <ion-checkbox id="VistaMar" ng-model="VistaMar"><span style="top: 40%;position: absolute;">Vista Mar </span></ion-checkbox>
+
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Price
+                </div>
+                <select id="priceRange">
+                    <option></option>
+                    <option ng-value="5000" ng-model="priceRange">5.000&#8364;</option>
+                    <option ng-value="10000" ng-model="priceRange">10.000&#8364;</option>
+                    <option ng-value="15000" ng-model="priceRange">15.000&#8364;</option>
+                    <option ng-value="20000" ng-model="priceRange">20.000&#8364;</option>
+                    <option ng-value="30000" ng-model="priceRange">30.000&#8364;</option>
+                    <option ng-value="40000" ng-model="priceRange">40.000&#8364;</option>
+                    <option ng-value="50000" ng-model="priceRange">50.000&#8364;</option>
+                    <option ng-value="60000" ng-model="priceRange">60.000&#8364;</option>
+                    <option ng-value="70000" ng-model="priceRange">70.000&#8364;</option>
+                    <option ng-value="80000" ng-model="priceRange">80.000&#8364;</option>
+                    <option ng-value="90000" ng-model="priceRange">90.000&#8364;</option>
+                    <option ng-value="100000" ng-model="priceRange">100.000&#8364;</option>
+                    <option ng-value="125000" ng-model="priceRange">125.000&#8364;</option>
+                    <option ng-value="150000" ng-model="priceRange">150.000&#8364;</option>
+                    <option ng-value="175000" ng-model="priceRange">175.000&#8364;</option>
+                    <option ng-value="200000" ng-model="priceRange">200.000&#8364;</option>
+                    <option ng-value="250000" ng-model="priceRange">250.000&#8364;</option>
+                    <option ng-value="300000" ng-model="priceRange">300.000&#8364;</option>
+                    <option ng-value="any" ng-model="priceRange">Cualquier</option>
+                </select>
+            </label>
+        </div>
+    </ion-content>
+</ion-modal-view>

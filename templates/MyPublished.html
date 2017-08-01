@@ -1,0 +1,37 @@
+﻿<ion-view view-title="Mis publicaciones">
+    <ion-content>
+        <div class="card" ng-repeat="Properties in publishedProperties">
+            <div class="item item-text-wrap" id="{{Properties.propertyGuid}}">
+                <div class="row">
+                    <h3 class="col-67" style="font-weight:700;color:#00bff3">{{Properties.subject}}</h3>
+                    <h4 class="col-33" style="font-weight:700;color:gray">{{Properties.createdon}}</h4>
+                </div>
+                <div class="row">
+                    <h3 class="col-67">{{Properties.price}}</h3>
+                    <h4 ng-if="Properties.status == 1" class="col-20" style="font-weight:700;color:#ffb800;">En revision</h4>
+                    <h4 ng-if="Properties.status == 2" class="col-20" style="font-weight:700;color:#70c670;">revisado</h4>
+                    <h4 ng-if="Properties.status == 4" class="col-20" style="font-weight:700;color:red;">declinado</h4>
+                    <h4 ng-if="Properties.status == 5" class="col-20" style="font-weight:700;color:red;">declinado</h4>
+                    <h4 ng-if="Properties.status == 6" class="col-20" style="font-weight:700;color:red;">declinado</h4>
+                    <h4 ng-if="Properties.status == 7" class="col-20" style="font-weight:700;color:red;">declinado</h4>
+                    <a ng-if="Properties.status == 0" class="col-10 icon ion-ios-trash-outline" id="delete" style="position: absolute;right: 10px;font-size: 20px" value="{{Properties.propertyGuid}}" ng-click="myFunc(Properties.propertyGuid)"></a>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="card" ng-if="publishedProperties.length ==0">
+            <div class="item item-text-wrap">
+                No se encontraron archivos.
+            </div>
+        </div>
+        <div class="overlay">
+            <div id="loading-img"></div>
+        </div>
+    </ion-content>
+</ion-view>
+<style>
+    .scroll{
+        margin-top: 10%;
+    }
+</style>            

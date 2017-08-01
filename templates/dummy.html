@@ -1,0 +1,1207 @@
+﻿<html>
+<head>
+    <meta>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+    <form>
+        <div>
+            <input type="file" id="filePicker">
+        </div>
+        <div>
+            <div id="cmplogo"></div>
+        </div>
+    </form>
+
+    <script>
+        var handleFileSelect = function (evt) {
+            debugger;
+            var files = evt.target.files;
+            var file = files[0];
+            var filetype = file.type;
+
+            if (files && file) {
+                var reader = new FileReader();
+                reader.onload = function (readerEvt) {
+                    debugger;
+                    var binaryString = readerEvt.target.result;
+                    // var imgdata = btoa(binaryString);
+                    var imgdata = "data:" + filetype + ";base64," + btoa(binaryString);
+                    $('#cmplogo').empty();
+                    $('#cmplogo').append("<a href='#'><img onclick='upload()' src=" + imgdata + " alt style='width: 100%; height:auto;'></a>");
+                    $('#filePicker').hide();
+                };
+                reader.readAsBinaryString(file);
+            }
+        };
+
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            document.getElementById('filePicker').addEventListener('change', handleFileSelect, false);
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+        }
+
+        function upload() {
+            $("#filePicker").click();
+        }
+    </script>
+
+</body>
+</html>
+
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+    </style>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+    <div style="margin-left: 100px; float: left; font-family: undefined;">
+        <div>
+            <video id="sourcevid" autoplay="" width="480" height="360" onloadedmetadata="ResizeCanvas();">
+                Sorry, you're browser doesn't support video. Please try
+                <a href="http://snapshot.opera.com/labs/camera/">Opera</a>.
+            </video>
+        </div>
+        <div style="text-align:center">
+            <input type="button" value="Start" onclick="start()" class="button">
+            <input type="button" value="Stop" onclick="stop()" class="button">
+            <input type="button" value="Capture" onclick="snapshot()" class="button">
+        </div>
+    </div>
+    <div style="margin-left: 100px; font-family: undefined;">
+        <img id="CaptureImage" src="" style="margin-left: 20px;" width="480" height="360">
+        <canvas id="tmpImage" style="margin-left: 20px; display: none;" width="480" height="360"></canvas>
+    </div>
+    <input type="button" value="saveImage" onclick="SaveImage()" class="button">
+    <script>
+        var ctx = null;
+        var canvas = document.getElementById("tmpImage");
+        var localMediaStream = null;
+        var video = document.querySelector('video');
+
+        function snapshot() {
+            if (localMediaStream) {
+                ctx.drawImage(video, 0, 0);
+                var img = document.getElementById('CaptureImage');
+                // "image/webp" works in Chrome 18. In other browsers, this will fall back to image/png.
+                img.src = canvas.toDataURL('image/webp');
+                $("#tmpImage").show();
+            }
+        }
+
+        function hasGetUserMedia() {
+            // Note: Opera builds are unprefixed.
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        }
+
+        function onFailSoHard() {
+
+        }
+
+        function start() {
+            if (hasGetUserMedia()) {
+                if (navigator.webkitGetUserMedia)
+                    navigator.getUserMedia = navigator.webkitGetUserMedia;
+                //var getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+
+
+                //var gumOptions = { video: true, toString: function () { return 'video'; } };
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ video: true, audio: true }, function (stream) {
+                        if (navigator.webkitGetUserMedia) {
+                            video.src = window.webkitURL.createObjectURL(stream);
+                        } else {
+                            video.src = stream; // Opera
+                        }
+                        localMediaStream = stream;
+                    }, onFailSoHard);
+                } else {
+                    video.src = 'somevideo.webm'; // fallback.
+                }
+            }
+        }
+
+        function stop() {
+            video = document.getElementById('sourcevid');
+            video.src = "";
+        }
+
+        function ResizeCanvas() {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+        }
+
+        $(document).ready(function () {
+            //$('.button').button();
+            $("#tmpImage").hide();
+            ctx = canvas.getContext('2d');
+        });
+
+        function SaveImage() {
+            debugger;
+            var imgSrc = $("#CaptureImage").attr("src");
+            //recordId = recordId.replace(/[{}]/g, "");
+            imgSrc = _base64ToArrayBuffer(imgSrc);
+            //var contactImage = Xrm.Page.getAttribute("entityimage").setValue(imgSrc);
+            var contactId = Xrm.Page.data.entity.getId();
+            var contactCreditLimit = Xrm.Page.getAttribute("creditlimit").getValue();
+
+            if (contactCreditLimit == null || contactCreditLimit < 5001) {
+
+                //retrieve image onecoinpile.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+
+            }
+            else if (contactCreditLimit >= 5001 && contactCreditLimit < 10001) {
+
+                //retrieve image twocoinpiles.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+
+            }
+            else if (contactCreditLimit >= 10001) {
+
+                //retrieve image threecoinpiles.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+            }
+        }
+
+        function _base64ToArrayBuffer(base64) {
+            var binary_string = window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+    </script>
+</body>
+</html>
+
+
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+    </style>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+    <div style="margin-left: 100px; float: left; font-family: undefined;">
+        <div>
+            <video id="sourcevid" autoplay="" width="480" height="360" onloadedmetadata="ResizeCanvas();">
+                Sorry, you're browser doesn't support video. Please try
+                <a href="http://snapshot.opera.com/labs/camera/">Opera</a>.
+            </video>
+        </div>
+        <div style="text-align:center">
+            <input type="button" value="Start" onclick="start()" class="button">
+            <input type="button" value="Stop" onclick="stop()" class="button">
+            <input type="button" value="Capture" onclick="snapshot()" class="button">
+        </div>
+    </div>
+    <div style="margin-left: 100px; font-family: undefined;">
+        <img id="CaptureImage" src="" style="margin-left: 20px;" width="480" height="360">
+        <canvas id="tmpImage" style="margin-left: 20px; display: none;" width="480" height="360"></canvas>
+    </div>
+    <input type="button" value="saveImage" onclick="SaveImage()" class="button">
+    <script>
+        var ctx = null;
+        var canvas = document.getElementById("tmpImage");
+        var localMediaStream = null;
+        var video = document.querySelector('video');
+
+        function snapshot() {
+            if (localMediaStream) {
+                ctx.drawImage(video, 0, 0);
+                var img = document.getElementById('CaptureImage');
+                // "image/webp" works in Chrome 18. In other browsers, this will fall back to image/png.
+                img.src = canvas.toDataURL('image/webp');
+                $("#tmpImage").show();
+            }
+        }
+
+        function hasGetUserMedia() {
+            // Note: Opera builds are unprefixed.
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        }
+
+        function onFailSoHard() {
+
+        }
+
+        function start() {
+            if (hasGetUserMedia()) {
+                if (navigator.webkitGetUserMedia)
+                    navigator.getUserMedia = navigator.webkitGetUserMedia;
+                //var getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+
+
+                //var gumOptions = { video: true, toString: function () { return 'video'; } };
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ video: true, audio: true }, function (stream) {
+                        if (navigator.webkitGetUserMedia) {
+                            video.src = window.webkitURL.createObjectURL(stream);
+                        } else {
+                            video.src = stream; // Opera
+                        }
+                        localMediaStream = stream;
+                    }, onFailSoHard);
+                } else {
+                    video.src = 'somevideo.webm'; // fallback.
+                }
+            }
+        }
+
+        function stop() {
+            video = document.getElementById('sourcevid');
+            video.src = "";
+        }
+
+        function ResizeCanvas() {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+        }
+
+        $(document).ready(function () {
+            //$('.button').button();
+            $("#tmpImage").hide();
+            ctx = canvas.getContext('2d');
+        });
+
+        function SaveImage() {
+            debugger;
+            var imgSrc = $("#CaptureImage").attr("src");
+            //recordId = recordId.replace(/[{}]/g, "");
+            imgSrc = _base64ToArrayBuffer(imgSrc);
+            //var contactImage = window.parent.Xrm.Page.getAttribute("entityimage").setValue(imgSrc);
+            var contactId = window.parent.Xrm.Page.data.entity.getId();
+            var contactCreditLimit = window.parent.Xrm.Page.getAttribute("creditlimit").getValue();
+
+            if (contactCreditLimit == null || contactCreditLimit < 5001) {
+
+                //retrieve image onecoinpile.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+
+            }
+            else if (contactCreditLimit >= 5001 && contactCreditLimit < 10001) {
+
+                //retrieve image twocoinpiles.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+
+            }
+            else if (contactCreditLimit >= 10001) {
+
+                //retrieve image threecoinpiles.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+            }
+        }
+
+
+    </script>
+
+</body>
+</html>
+
+<!-- backup -->
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+    </style>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+    <div style="margin-left: 100px; float: left; font-family: undefined;">
+        <div>
+            <video id="sourcevid" autoplay="" width="480" height="360" onloadedmetadata="ResizeCanvas();">
+                Sorry, you're browser doesn't support video. Please try
+                <a href="http://snapshot.opera.com/labs/camera/">Opera</a>.
+            </video>
+        </div>
+        <div style="text-align:center">
+            <input type="button" value="Start" onclick="start()" class="button">
+            <input type="button" value="Stop" onclick="stop()" class="button">
+            <input type="button" value="Capture" onclick="snapshot()" class="button">
+        </div>
+    </div>
+    <div style="margin-left: 100px; font-family: undefined;">
+        <img id="CaptureImage" src="" style="margin-left: 20px;" width="480" height="360">
+        <canvas id="tmpImage" style="margin-left: 20px; display: none;" width="480" height="360"></canvas>
+    </div>
+    <input type="button" value="saveImage" onclick="SaveImage()" class="button">
+    <script>
+        var ctx = null;
+        var canvas = document.getElementById("tmpImage");
+        var localMediaStream = null;
+        var video = document.querySelector('video');
+
+        function snapshot() {
+            if (localMediaStream) {
+                ctx.drawImage(video, 0, 0);
+                var img = document.getElementById('CaptureImage');
+                // "image/webp" works in Chrome 18. In other browsers, this will fall back to image/png.
+                img.src = canvas.toDataURL('image/webp');
+                $("#tmpImage").show();
+            }
+        }
+
+        function hasGetUserMedia() {
+            // Note: Opera builds are unprefixed.
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        }
+
+        function onFailSoHard() {
+
+        }
+
+        function start() {
+            if (hasGetUserMedia()) {
+                if (navigator.webkitGetUserMedia)
+                    navigator.getUserMedia = navigator.webkitGetUserMedia;
+                //var getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+
+
+                //var gumOptions = { video: true, toString: function () { return 'video'; } };
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ video: true, audio: true }, function (stream) {
+                        if (navigator.webkitGetUserMedia) {
+                            video.src = window.webkitURL.createObjectURL(stream);
+                        } else {
+                            video.src = stream; // Opera
+                        }
+                        localMediaStream = stream;
+                    }, onFailSoHard);
+                } else {
+                    video.src = 'somevideo.webm'; // fallback.
+                }
+            }
+        }
+
+        function stop() {
+            video = document.getElementById('sourcevid');
+            video.src = "";
+        }
+
+        function ResizeCanvas() {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+        }
+
+        $(document).ready(function () {
+            //$('.button').button();
+            $("#tmpImage").hide();
+            ctx = canvas.getContext('2d');
+        });
+
+        function SaveImage() {
+            debugger;
+            var imgSrc = $("#CaptureImage").attr("src");
+            //recordId = recordId.replace(/[{}]/g, "");
+            imgSrc = _base64ToArrayBuffer(imgSrc);
+            //var contactImage = window.parent.Xrm.Page.getAttribute("entityimage").setValue(imgSrc);
+            var contactId = window.parent.Xrm.Page.data.entity.getId();
+            var contactCreditLimit = window.parent.Xrm.Page.getAttribute("creditlimit").getValue();
+
+            if (contactCreditLimit == null || contactCreditLimit < 5001) {
+
+                //retrieve image onecoinpile.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+
+            }
+            else if (contactCreditLimit >= 5001 && contactCreditLimit < 10001) {
+
+                //retrieve image twocoinpiles.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+
+            }
+            else if (contactCreditLimit >= 10001) {
+
+                //retrieve image threecoinpiles.jpg and update contact record "EntityImage" attribute
+                this.UpdateContactRecordWithNewImage(contactId, imgSrc);
+            }
+        }
+
+        function _base64ToArrayBuffer(base64) {
+            var binary_string = window.atob(base64);
+            var len = binary_string.length;
+            var bytes = new Uint8Array(len);
+            for (var i = 0; i < len; i++) {
+                bytes[i] = binary_string.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+    </script>
+
+</body>
+</html>
+
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+
+        #tmpImage {
+            display: none !important;
+        }
+    </style>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+    <div style="margin-left: 100px; float: left; font-family: undefined;">
+        <div>
+            <video id="sourcevid" autoplay="" width="480" height="360" onloadedmetadata="ResizeCanvas();">
+                Sorry, you're browser doesn't support video. Please try
+                <a href="http://snapshot.opera.com/labs/camera/">Opera</a>.
+            </video>
+        </div>
+        <div style="text-align:center">
+            <input type="button" value="Start" onclick="start()" class="button">
+            <input type="button" value="Stop" onclick="stop()" class="button">
+            <input type="button" value="Capture" onclick="snapshot()" class="button">
+            <input type="button" value="Save image" onclick="SaveImage()" class="button">
+        </div>
+    </div>
+    <div style="margin-left: 100px; font-family: undefined;">
+        <img id="CaptureImage" src="" style="margin-left: 20px;" width="480" height="360">
+        <canvas id="tmpImage" style="margin-left: 20px; display: none;" width="480" height="360"></canvas>
+    </div>
+
+    <script>
+        var ctx = null;
+        var canvas = document.getElementById("tmpImage");
+        var localMediaStream = null;
+        var video = document.querySelector('video');
+
+        function snapshot() {
+            if (localMediaStream) {
+                ctx.drawImage(video, 0, 0);
+                var img = document.getElementById('CaptureImage');
+                // "image/webp" works in Chrome 18. In other browsers, this will fall back to image/png.
+                img.src = canvas.toDataURL('image/webp');
+                $("#tmpImage").show();
+            }
+        }
+
+        function hasGetUserMedia() {
+            // Note: Opera builds are unprefixed.
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        }
+
+        function onFailSoHard() {
+
+        }
+
+        function start() {
+            if (hasGetUserMedia()) {
+                if (navigator.webkitGetUserMedia)
+                    navigator.getUserMedia = navigator.webkitGetUserMedia;
+                //var getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+
+
+                //var gumOptions = { video: true, toString: function () { return 'video'; } };
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ video: true, audio: true }, function (stream) {
+                        if (navigator.webkitGetUserMedia) {
+                            video.src = window.webkitURL.createObjectURL(stream);
+                        } else {
+                            video.src = stream; // Opera
+                        }
+                        localMediaStream = stream;
+                    }, onFailSoHard);
+                } else {
+                    video.src = 'somevideo.webm'; // fallback.
+                }
+            }
+        }
+
+        function stop() {
+            video = document.getElementById('sourcevid');
+            video.src = "";
+        }
+
+        function ResizeCanvas() {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+        }
+
+        $(document).ready(function () {
+            //$('.button').button();
+            $("#tmpImage").hide();
+            ctx = canvas.getContext('2d');
+        });
+
+        function SaveImage() {
+            var contactId = window.parent.Xrm.Page.data.entity.getId();
+            if (contactId != null) {
+                contactId = contactId.replace(/[{}]/g, "");
+                getAnnotation(contactId);
+                var imgSrc = $("#CaptureImage").attr("src");
+                if (imgSrc != "") {
+                    var splitImage = imgSrc.split(";");
+                    var removebase = splitImage[1];
+                    removebase = removebase.split(",")[1];
+                    var entity = {};
+                    entity.filename = contactId + ".webp";
+                    entity.subject = "Attachment";
+                    entity.documentbody = removebase;
+                    entity.mimetype = splitImage[0];
+                    entity["objectid_contact@odata.bind"] = "/contacts(" + contactId + ")";
+
+                    var req = new XMLHttpRequest();
+                    req.open("POST", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations", true);
+                    req.setRequestHeader("OData-MaxVersion", "4.0");
+                    req.setRequestHeader("OData-Version", "4.0");
+                    req.setRequestHeader("Accept", "application/json");
+                    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req.onreadystatechange = null;
+                            if (this.status === 204) {
+                                var uri = this.getResponseHeader("OData-EntityId");
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(uri);
+                                var newEntityId = matches[1];
+                                debugger;
+                                var parentIframe = $("#crmContentPanel").find("#contentIFrame0");
+                                if (parentIframe != null) {
+                                    var getIframe = $(parentIframe.context)[0].getElementById("WebResource_TakeMBPhoto");
+                                    if (getIframe != null) {
+                                        var imageTag = getIframe.contentDocument.getElementById("filePicker");
+                                        if (imageTag != null) {
+                                            $(imageTag).attr("src", imgSrc);
+                                        }
+                                    }
+                                }
+                            } else {
+                                Xrm.Utility.alertDialog(this.statusText);
+                            }
+                        }
+                    };
+                    req.send(JSON.stringify(entity));
+                }
+
+            } else {
+                setTimeout(function () {
+                    SaveImage();
+                }, 2000)
+            }
+
+        }
+
+        function getAnnotation(contactId) {
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations?$expand=objectid_contact($select=fullname),objectid_contract($select=entityimageid)&$filter=_objectid_value eq " + contactId + "", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var annotationid = results.value[i]["annotationid"];
+                            var filename = results.value[i].filename;
+                            if (filename == contactId + ".webp") {
+                                DeleteAnnotation(annotationid);
+                            }
+                        }
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+
+
+        function DeleteAnnotation(annotationId) {
+            var req = new XMLHttpRequest();
+            req.open("DELETE", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations(" + annotationId + ")", true);
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 204 || this.status === 1223) {
+                        //Success - No Return Data - Do Something
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+    </script>
+
+
+
+</body>
+</html>
+
+
+
+<html>
+<head>
+    <meta>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+    </style>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+    <form>
+        <div>
+            <input type="file" id="filePicker">
+        </div>
+        <div>
+            <div id="cmplogo"></div>
+        </div>
+    </form>
+
+    <script>
+        var handleFileSelect = function (evt) {
+            debugger;
+            var files = evt.target.files;
+            var file = files[0];
+            var filetype = file.type;
+
+            if (files && file) {
+                var reader = new FileReader();
+                reader.onload = function (readerEvt) {
+                    debugger;
+                    var binaryString = readerEvt.target.result;
+                    // var imgdata = btoa(binaryString);
+                    var imgdata = "data:" + filetype + ";base64," + btoa(binaryString);
+                    $('#cmplogo').empty();
+                    $('#cmplogo').append("<a href='#'><img onclick='upload()' src=" + imgdata + " alt style='width: 100%; height:auto;'></a>");
+                    $('#filePicker').hide();
+                };
+                reader.readAsBinaryString(file);
+            }
+        };
+
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            document.getElementById('filePicker').addEventListener('change', handleFileSelect, false);
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+        }
+
+        function upload() {
+            $("#filePicker").click();
+        }
+
+        function getAnnotation(contactId) {
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations?$expand=objectid_contact($select=fullname),objectid_contract($select=entityimageid)&$filter=_objectid_value eq " + contactId + "", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var annotationid = results.value[i]["annotationid"];
+                            var filename = results.value[i].filename;
+                            var imgdata = results.documentbody;
+                            $('#cmplogo').append("<a href='#'><img onclick='upload()' src=" + imgdata + " alt style='width: 100%; height:auto;'></a>");
+                        }
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+
+    </script>
+
+
+</body>
+</html>
+
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>#memberimage{display:none;}</style>
+</head>
+<body style="word-wrap: break-word;">
+    <div>
+        <img id="memberimage" src="" style="width: 720px; height: 520;">
+    </div>
+    <script>
+        var contactId = window.parent.Xrm.Page.data.entity.getId();
+        if (contactId != null) {
+            contactId = contactId.replace(/[{}]/g, "");
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations?$expand=objectid_contact($select=fullname),objectid_contract($select=entityimageid)&$filter=_objectid_value eq " + contactId + "", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var annotationid = results.value[i]["annotationid"];
+                            var filename = results.value[i].filename;
+                            var filename = results.value[i].filename;
+                            if (filename == contactId + ".webp") {
+                                var mimetype = results.value[i].mimetype;
+                                var documentbody = results.value[i].documentbody;
+                                debugger;
+                                $("#memberimage").attr("src", mimetype + ";base64," + documentbody);
+                                $("#memberimage").css("display", "block");
+                            }
+
+                        }
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+    </script>
+</body>
+</html>
+
+
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>
+        #memberimage {
+            display: none;
+        }
+    </style>
+
+</head>
+<body style="word-wrap: break-word;">
+    <div>
+        <img id="memberimage" src="" style="width:230px; height:200px;">
+    </div>
+    <script>
+        var contactId = window.parent.Xrm.Page.data.entity.getId();
+        if (contactId != null) {
+            contactId = contactId.replace(/[{}]/g, "");
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations?$expand=objectid_contact($select=fullname),objectid_contract($select=entityimageid)&$filter=_objectid_value eq " + contactId + "", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var annotationid = results.value[i]["annotationid"];
+                            var filename = results.value[i].filename;
+                            var filename = results.value[i].filename;
+                            if (filename == contactId + ".webp") {
+                                var mimetype = results.value[i].mimetype;
+                                var documentbody = results.value[i].documentbody;
+                                $("#memberimage").attr("src", mimetype + ";base64," + documentbody);
+                                $("#memberimage").css("display", "block");
+                            }
+
+                        }
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+    </script>
+
+</body>
+</html>
+
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>
+        #memberimage {
+            display: none;
+        }
+    </style>
+
+</head>
+<body style="word-wrap: break-word;">
+    <div>
+        <img id="memberimage" src="" style="width:230px; height:200px;">
+    </div>
+    <script>
+        var contactId = window.parent.Xrm.Page.data.entity.getId();
+        if (contactId != null) {
+            contactId = contactId.replace(/[{}]/g, "");
+
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/contacts(EE254D19-0342-E711-80CB-005056030F25)", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var result = JSON.parse(this.response);
+                        var contactid = result["contactid"];
+                        var entityimage = result["entityimage"];
+                        $("#memberimage").attr("src", mimetype + ";base64," + documentbody);
+                        $("#memberimage").css("display", "block");
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+
+        }
+    </script>
+
+</body>
+</html>
+
+<!-- finger print -->
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_Jquery_Minified"></script>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_JSAngularJS"></script>
+    <link rel="stylesheet" href="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_CSSBootstrap.min.css">
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="word-wrap: break-word;" class="font">
+    <div ng-app="myApp" ng-controller="AppCtrl">
+        <div style="padding:20px!important;">
+            <div>
+                <div>
+                    <label for="site-name">&nbsp;Finger Print Type:</label><br>
+                    <select class="form-control" id="site-name" ng-model="user.value" ng-change="AddFinger(user)" style="width:150px;height:30px;">
+                        <option value=""> --select-- </option>
+                        <option value="Thumb"> Thumb  </option>
+                        <option value="Index"> Index </option>
+                    </select>
+                </div><br>
+                <div ng-if="src">
+                    <button type="button" class="btn active" ng-click="Update(user)" style="min-width: 75px;">Update Finger Print</button>
+                </div>
+            </div><br>
+            <div class="panel" ng-if="show">
+                <div class="windows8" ng-if="loadImage">
+                    <div class="wBall" id="wBall_1">
+                        <div class="wInnerBall"></div>
+                    </div>
+                    <div class="wBall" id="wBall_2">
+                        <div class="wInnerBall"></div>
+                    </div>
+                    <div class="wBall" id="wBall_3">
+                        <div class="wInnerBall"></div>
+                    </div>
+                    <div class="wBall" id="wBall_4">
+                        <div class="wInnerBall"></div>
+                    </div>
+                    <div class="wBall" id="wBall_5">
+                        <div class="wInnerBall"></div>
+                    </div>
+                </div>
+                <div class="panel-heading">Scan Finger Print</div>
+                <div style="align-self:center;">
+                    <img id="ItemPreview" src="" width="140" height="100">
+                </div><br>
+                <div>
+                    <button type="button" class="btn active" ng-click="save(user)" style="min-width: 75px;">Save</button>
+                    <button type="button" class="btn" ng-click="Cancel()" style="min-width: 75px;">Cancel</button>
+                </div>
+            </div>
+            <div ng-if="showOnSave">
+                <label class="row form-control" style="text-align:center!important;">{{response}}</label>
+            </div>
+        </div>
+    </div>
+    <script>
+        angular.module('myApp', []).controller('AppCtrl', function ($scope, $http, $timeout) {
+            var URL = "https://moreyeahs.net";
+            $scope.user = { UserId: "", value: "" };
+            $scope.show = false;
+            $scope.src = false;
+            $scope.showOnSave = false;
+            $scope.loadImage = false;
+
+            try {
+                var guidId = window.parent.Xrm.Page.data.entity.getId();
+                $scope.user.UserId = guidId.replace("{", "").replace("}", "");
+            }
+            catch (ex) {
+                $scope.user.UserId = "Anil1";
+            }
+
+            $('#selector button').click(function () {
+                $(this).addClass('active').siblings().removeClass('active');
+                // TODO: insert whatever you want to do with $(this) here
+            });
+
+            $scope.AddFinger = function (data1) {
+                $scope.showOnSave = false;
+                if (data1) {
+                    if (!data1.value) {
+                        alert("Please Select finger type");
+                        return;
+                    }
+                    $scope.show = true;
+                    var data = {
+                        process: "Add",
+                        CustomerGuidId: data1.UserId,
+                        fingerType: data1.value
+                    }
+                    $scope.loadImage = true;
+                    var jqxhr = $.post(URL + "/api/scanner/add", data, function (response) {
+                        $scope.onTimeout();
+                    })
+                   .fail(function () {
+                       $scope.loadImage = false;
+                   })
+                }
+                else {
+                    alert("Please Select Parameter");
+                }
+            };
+
+            $scope.Update = function (data1) {
+                $scope.showOnSave = false;
+                $scope.src = false;
+                if (data1) {
+                    if (!data1.value) {
+                        alert("Please Select finger type");
+                        return;
+                    }
+                    var data = {
+                        process: "update",
+                        CustomerGuidId: data1.UserId,
+                        fingerType: data1.value
+                    }
+                    $scope.loadImage = true;
+                    var jqxhr = $.post(URL + "/api/scanner/add", data, function (response) {
+                        $timeout(null, 2000);
+                        $scope.onTimeout()
+                    })
+                   .fail(function () {
+                       $scope.loadImage = false;
+                   })
+                }
+                else {
+                    alert("Please Select Parameter");
+                }
+            };
+
+            $scope.save = function (data1) {
+                var UserId = data1.UserId;
+                UserId = UserId.replace(/[{}]/g, "");
+                debugger;
+                var fingerImage = $("#ItemPreview").attr("src");
+                if (fingerImage != "") {
+                    var req = new XMLHttpRequest();
+                    req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/contacts(" + UserId + ")?$expand=Contact_Annotation($select=filename)", true);
+                    req.setRequestHeader("OData-MaxVersion", "4.0");
+                    req.setRequestHeader("OData-Version", "4.0");
+                    req.setRequestHeader("Accept", "application/json");
+                    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+                    req.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req.onreadystatechange = null;
+                            if (this.status === 200) {
+                                var result = JSON.parse(this.response);
+                                var contactid = result["contactid"];
+                                for (var a = 0; a < result.Contact_Annotation.length; a++) {
+                                    var contact_Annotation_filename = result.Contact_Annotation[a]["filename"];
+                                    var contact_Annotation_annotationid = result.Contact_Annotation[a]["annotationid"];
+                                    if (contact_Annotation_filename.toLocaleLowerCase() == "thumb finger.png" && data1.value == "Thumb") {
+                                        contact_Annotation_annotationid = contact_Annotation_annotationid.replace(/[{}]/g, "");
+                                        DeleteAnnotaion(contact_Annotation_annotationid);
+                                    }
+
+                                    if (contact_Annotation_filename.toLocaleLowerCase() == "index finger.png" && data1.value == "Index") {
+                                        contact_Annotation_annotationid = contact_Annotation_annotationid.replace(/[{}]/g, "");
+                                        DeleteAnnotaion(contact_Annotation_annotationid);
+                                    }
+                                }
+                                CreateAnnotation(data1, fingerImage);
+                            } else {
+                                window.parent.Xrm.Utility.alertDialog(this.statusText);
+                            }
+                        }
+                    };
+                    req.send();
+                }
+                $scope.show = false;
+                $scope.showOnSave = true;
+            };
+
+            $scope.Cancel = function (data1) {
+                $scope.showOnSave = false;
+                $scope.show = false;
+            };
+
+            function DeleteAnnotaion(noteid) {
+                var req = new XMLHttpRequest();
+                req.open("DELETE", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations(" + noteid + ")", true);
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204 || this.status === 1223) {
+                            //Success - No Return Data - Do Something
+                        } else {
+                            window.parent.Xrm.Utility.alertDialog(this.statusText);
+                        }
+                    }
+                };
+                req.send();
+            }
+
+            function CreateAnnotation(data1, fingerImage) {
+                fingerImage = fingerImage.split(",");
+                fingerImage = fingerImage[1];
+                var entity = {};
+                if (data1.value == "Thumb") {
+                    entity.filename = "Thumb Finger.png";
+                }
+                if (data1.value == "Index") {
+                    entity.filename = "Index Finger.png";
+                }
+                entity.mimetype = "image/png";
+                entity.documentbody = fingerImage;
+                entity.subject = "Attachment";
+                entity["objectid_contact@odata.bind"] = "/contacts("+data1.UserId+")";
+
+                var req = new XMLHttpRequest();
+                req.open("POST", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations", true);
+                req.setRequestHeader("OData-MaxVersion", "4.0");
+                req.setRequestHeader("OData-Version", "4.0");
+                req.setRequestHeader("Accept", "application/json");
+                req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                req.onreadystatechange = function () {
+                    if (this.readyState === 4) {
+                        req.onreadystatechange = null;
+                        if (this.status === 204) {
+                            var uri = this.getResponseHeader("OData-EntityId");
+                            var regExp = /\(([^)]+)\)/;
+                            var matches = regExp.exec(uri);
+                            var newEntityId = matches[1];
+                        } else {
+                            window.parent.Xrm.Utility.alertDialog(this.statusText);
+                        }
+                    }
+                };
+                req.send(JSON.stringify(entity));
+            }
+
+            $scope.onTimeout = function () {
+                $http.get(URL + "/api/scanner/verify").then(function (response) {
+                    var myWelcome = response.data;
+                    if (myWelcome.FingerPrintData && $scope.user.value == myWelcome.fingerType) {
+                        if (myWelcome.FingerPrintData != null) {
+                            $scope.loadImage = false;
+                            $scope.src = true;
+                        }
+                        document.getElementById("ItemPreview").src = "data:image/png;base64," + myWelcome.FingerPrintData;
+                        $scope.response = myWelcome.response;
+                        try {
+                            var res = myWelcome.response.split(" ");
+                            if (res[1] == "Authorized") {
+                                $('#redlight').css('background-color', 'green');
+                            }
+                            else if (res[1] == "unauthorized") {
+                                $('#redlight').css('background-color', 'red');
+                            }
+                            else {
+                                $('#redlight').css('background-color', 'white');
+                            }
+                        }
+                        catch (ex) { }
+                    }
+                    else {
+                        document.getElementById("ItemPreview").src = "";
+                        $('#redlight').css('background-color', 'white');
+                    }
+                    $timeout($scope.onTimeout, 300);
+                });
+            }
+            var ImageLoad = $timeout($scope.onTimeout(), 500);
+        });
+    </script>
+
+
+</body>
+</html>

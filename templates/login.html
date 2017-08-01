@@ -1,0 +1,64 @@
+<ion-view view-title="ACCESO USUARIOS" align-title="left">
+     <ion-content>
+        <div class="hero no-header flat">
+            <div class="content">
+                <div class="app-icon"></div>
+                <h1 style="color:black">Sant Just</h1>
+            </div>
+        </div>
+        <form name="userForm" ng-submit="submitForm()" novalidate>
+            <div class="list">
+                <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">correo electronico</span>
+                        <input id="emaillogin" type="email" name="email" placeholder="" ng-model="user.email">
+                    </label>
+                    <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">Introduzca una direccion de correo electronico valida.</p>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : userForm.Password.$invalid && !userForm.Password.$pristine }">
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">contrasena</span>
+                        <input id="passwordlogin" type="password" name="Password" placeholder="" ng-model="user.Password" ng-minlength="8" ng-maxlength="15">
+                    </label>
+                    <p ng-show="userForm.Password.$error.minlength" class="help-block">Introduzca una contrasena con al menos 8 caracteres.</p>
+                    <p ng-show="userForm.Password.$error.maxlength" class="help-block">La contrasena es demasiado larga.</p>
+                </div>
+                <span id="show" ng-show="show" ng-click="Ocultar()">Mostar</span>
+                <span id="show" ng-hide="show" ng-click="Mostar()">Ocultar</span><br /><br />
+            </div>
+            <div class="row">
+                <label>
+                    <input name="checkbox" type="checkbox" id="rememberPassword"/>
+                    <span></span>
+                </label>
+                <div class="col"><input type="checkbox" checked="checked">Mantener sesion iniciada</div>
+                <div class="col"><a href="" style="color:palevioletred" ng-click="ForgetPassword()"  ng-hide="userForm.email.$invalid">He olvidado mi constrasena?</a></div>
+            </div>
+            <div class="padding">
+                <button class="button button-full button-balanced ink" ng-click="login()" ng-disabled="userForm.$invalid">ENTRAR</button>
+                <button class="button button-full button-default ink" ng-click="register()">Registrar</button>
+            </div>
+
+            <!--<div class="button-bar">
+                <button class="button button-full button-border icon-left ion-social-google1 button-assertive-900">Login with Google+</button>
+                <button class="button button-full button-border icon-left ion-social-twitter1 button-calm-900">Twitter</button>
+                <button class="button button-full button-border icon-left ion-social-facebook1 button-positive-900">Login with Facebook</button>
+            </div>-->
+            </form>
+</ion-content>
+</ion-view>
+<style>
+.help-block { color: red;margin: 5px 0 5px 15px;} input {display: none;}
+
+label input[type=checkbox] ~ span {display: inline-block;vertical-align: middle;cursor: pointer;background: #fff;border: 1px solid #888;padding: 1px;height: 20px;width: 20px;}
+
+label input[type=checkbox]:checked ~ span {background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path d="M14 18L26 6l4 4-16 16L4 16l4-4z"/></svg>');background-size: 100%;}
+#hide, #show {
+        float: right;
+        margin-right: 15px;
+        color: #000;
+    }
+#hide{
+    display:none;
+}
+</style>

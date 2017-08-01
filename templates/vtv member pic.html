@@ -1,0 +1,663 @@
+﻿<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+
+        .button-sc {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+        }
+
+        #tmpImage {
+            display: none !important;
+        }
+    </style>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="word-wrap: break-word;">
+    <div style="text-align:center;margin-right: 7%;">
+        <input type="button" value="Start Webcam" onclick="start()" class="button button-sc">
+        <input type="button" value="Stop Webcam" onclick="stop()" class="button button-sc">
+        <input type="button" value="Capture Image" onclick="snapshot()" class="button button-sc">
+        <input type="button" value="Save Image" onclick="SaveImage()" class="button button-sc">
+    </div>
+    <div style="margin-left: 100px; float: left; font-family: undefined;">
+        <div>
+            <video id="sourcevid" autoplay="" width="480" height="360" onloadedmetadata="ResizeCanvas();">
+                Sorry, you're browser doesn't support video. Please try
+                <a href="http://snapshot.opera.com/labs/camera/">Opera</a>.
+            </video>
+        </div>
+
+    </div>
+    <div style="margin-left: 100px; font-family: undefined;">
+        <img id="CaptureImage" src="" style="margin-left: 20px;" width="480" height="360">
+        <canvas id="tmpImage" style="margin-left: 20px; display: none;" width="480" height="360"></canvas>
+    </div>
+
+    <script>
+        var ctx = null;
+        var canvas = document.getElementById("tmpImage");
+        var localMediaStream = null;
+        var video = document.querySelector('video');
+
+        function snapshot() {
+            if (localMediaStream) {
+                ctx.drawImage(video, 0, 0);
+                var img = document.getElementById('CaptureImage');
+                // "image/webp" works in Chrome 18. In other browsers, this will fall back to image/png.
+                img.src = canvas.toDataURL('image/webp');
+                $("#tmpImage").show();
+            }
+        }
+
+        function hasGetUserMedia() {
+            // Note: Opera builds are unprefixed.
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        }
+
+        function onFailSoHard() {
+
+        }
+
+        function start() {
+            if (hasGetUserMedia()) {
+                if (navigator.webkitGetUserMedia)
+                    navigator.getUserMedia = navigator.webkitGetUserMedia;
+                //var getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+
+
+                //var gumOptions = { video: true, toString: function () { return 'video'; } };
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ video: true, audio: true }, function (stream) {
+                        if (navigator.webkitGetUserMedia) {
+                            video.src = window.webkitURL.createObjectURL(stream);
+                        } else {
+                            video.src = stream; // Opera
+                        }
+                        localMediaStream = stream;
+                    }, onFailSoHard);
+                } else {
+                    video.src = 'somevideo.webm'; // fallback.
+                }
+            }
+        }
+
+        function stop() {
+            video = document.getElementById('sourcevid');
+            video.src = "";
+        }
+
+        function ResizeCanvas() {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+        }
+
+        $(document).ready(function () {
+            //$('.button').button();
+            $("#tmpImage").hide();
+            ctx = canvas.getContext('2d');
+        });
+
+        function SaveImage() {
+            var contactId = window.parent.Xrm.Page.data.entity.getId();
+            if (contactId != null) {
+                contactId = contactId.replace(/[{}]/g, "");
+                getAnnotation(contactId);
+                var imgSrc = $("#CaptureImage").attr("src");
+                if (imgSrc != "") {
+                    var splitImage = imgSrc.split(";");
+                    var removebase = splitImage[1];
+                    removebase = removebase.split(",")[1];
+                    var entity = {};
+                    entity.filename = contactId + ".webp";
+                    entity.subject = "Attachment";
+                    entity.documentbody = removebase;
+                    entity.mimetype = splitImage[0];
+                    entity["objectid_contact@odata.bind"] = "/contacts(" + contactId + ")";
+
+                    var req = new XMLHttpRequest();
+                    req.open("POST", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations", true);
+                    req.setRequestHeader("OData-MaxVersion", "4.0");
+                    req.setRequestHeader("OData-Version", "4.0");
+                    req.setRequestHeader("Accept", "application/json");
+                    req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+                    req.onreadystatechange = function () {
+                        if (this.readyState === 4) {
+                            req.onreadystatechange = null;
+                            if (this.status === 204) {
+                                var uri = this.getResponseHeader("OData-EntityId");
+                                var regExp = /\(([^)]+)\)/;
+                                var matches = regExp.exec(uri);
+                                var newEntityId = matches[1];
+
+                            } else {
+                                Xrm.Utility.alertDialog(this.statusText);
+                            }
+                         var subgrid = window.parent.Xrm.Page.ui.controls.get("WebResource_getMemberPhoto");
+                         subgrid.refresh();
+                        }
+                    };
+                    req.send(JSON.stringify(entity));
+                }
+
+            } else {
+                setTimeout(function () {
+                    SaveImage();
+                }, 2000)
+            }
+
+        }
+
+        function getAnnotation(contactId) {
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations?$expand=objectid_contact($select=fullname),objectid_contract($select=entityimageid)&$filter=_objectid_value eq " + contactId + "", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var annotationid = results.value[i]["annotationid"];
+                            var filename = results.value[i].filename;
+                            if (filename == contactId + ".webp") {
+                                DeleteAnnotation(annotationid);
+                            }
+                        }
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+
+
+        function DeleteAnnotation(annotationId) {
+            var req = new XMLHttpRequest();
+            req.open("DELETE", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations(" + annotationId + ")", true);
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 204 || this.status === 1223) {
+                        //Success - No Return Data - Do Something
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+    </script>
+
+
+
+
+</body>
+</html>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <script>
+        //333f7d2f-4c44-e711-80cb-005056030f25
+        
+    var contactGuid = window.parent.Xrm.Page.data.entity.getId();
+    if (contactGuid != "") {
+        contactGuid = contactGuid.replace("/[{}]/g", "");
+        getActivity(contactGuid);
+    }
+
+
+    //get activity
+    function getActivity(contactGuid) {
+        var req = new XMLHttpRequest();
+        req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/contacts(" + contactGuid + ")?$expand=contact_vtv_attachmentses($select=subject)", true);
+        req.setRequestHeader("OData-MaxVersion", "4.0");
+        req.setRequestHeader("OData-Version", "4.0");
+        req.setRequestHeader("Accept", "application/json");
+        req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        req.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                req.onreadystatechange = null;
+                if (this.status === 200) {
+                    var result = JSON.parse(this.response);
+                    var contactid = result["contactid"];
+                    for (var a = 0; a < result.contact_vtv_attachmentses.length; a++) {
+                        var contact_vtv_attachmentses_subject = result.contact_vtv_attachmentses[a]["subject"];
+                        if (contact_vtv_attachmentses_subject == contactGuid) {
+                            var contact_vtv_attachmentses_activityid = result.contact_vtv_attachmentses[a]["activityid"];
+                            contact_vtv_attachmentses_activityid = contact_vtv_attachmentses_activityid.replace("/[{}]/g", "");
+                            DeleteAttachmentActivity(contact_vtv_attachmentses_activityid);
+                        }
+                    }
+                    createAttachmentActivity(contactGuid);
+                } else {
+                    Xrm.Utility.alertDialog(this.statusText);
+                }
+            }
+        };
+        req.send();
+    }
+    //Delete previous attachments activity if exist
+    function DeleteAttachmentActivity(attachmentId) {
+        var req = new XMLHttpRequest();
+        req.open("DELETE", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_attachmentses(" + attachmentId + ")", true);
+        req.setRequestHeader("Accept", "application/json");
+        req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        req.setRequestHeader("OData-MaxVersion", "4.0");
+        req.setRequestHeader("OData-Version", "4.0");
+        req.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                req.onreadystatechange = null;
+                if (this.status === 204 || this.status === 1223) {
+                    //Success - No Return Data - Do Something
+                } else {
+                    Xrm.Utility.alertDialog(this.statusText);
+                }
+            }
+        };
+        req.send();
+    }
+
+    //create attachment ctivity
+    function createAttachmentActivity(contactGuid) {
+        var entity = {};
+        entity.subject = contactGuid;
+        entity["regardingobjectid_contact@odata.bind"] = "/contacts(" + contactGuid + ")";
+
+        var req = new XMLHttpRequest();
+        req.open("POST", Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_attachmentses", true);
+        req.setRequestHeader("OData-MaxVersion", "4.0");
+        req.setRequestHeader("OData-Version", "4.0");
+        req.setRequestHeader("Accept", "application/json");
+        req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        req.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                req.onreadystatechange = null;
+                if (this.status === 204) {
+                    var uri = this.getResponseHeader("OData-EntityId");
+                    var regExp = /\(([^)]+)\)/;
+                    var matches = regExp.exec(uri);
+                    var newEntityId = matches[1];
+                    CreateAnnotationForAttachmentActivity(newEntityId);
+                } else {
+                    Xrm.Utility.alertDialog(this.statusText);
+                }
+            }
+        };
+        req.send(JSON.stringify(entity));
+    }
+
+    //create annotation for attachmnet activity
+    function CreateAnnotationForAttachmentActivity(attachmentId)
+    {
+        var entity = {};
+        entity.filename = "Member Image";
+        entity.subject = "Attachment";
+        entity.documentbody = removebase;
+        entity.mimetype = "image/webp";
+        entity["objectid_vtv_attachments@odata.bind"] = "/vtv_attachmentses(" + attachmentId + ")";
+
+        var req = new XMLHttpRequest();
+        req.open("POST", Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations", true);
+        req.setRequestHeader("OData-MaxVersion", "4.0");
+        req.setRequestHeader("OData-Version", "4.0");
+        req.setRequestHeader("Accept", "application/json");
+        req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+        req.onreadystatechange = function () {
+            if (this.readyState === 4) {
+                req.onreadystatechange = null;
+                if (this.status === 204) {
+                    var uri = this.getResponseHeader("OData-EntityId");
+                    var regExp = /\(([^)]+)\)/;
+                    var matches = regExp.exec(uri);
+                    var newEntityId = matches[1];
+                } else {
+                    Xrm.Utility.alertDialog(this.statusText);
+                }
+            }
+        };
+        req.send(JSON.stringify(entity));
+    }
+    </script>
+</body>
+
+</html>
+
+<html>
+<head>
+    <script src="https://crm-train.cmg.asia/CMGD365DEVM3/WebResources/vtv_jquery.min.js"></script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+
+        .button-sc {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            -ms-touch-action: manipulation;
+            touch-action: manipulation;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+        }
+
+        #tmpImage {
+            display: none !important;
+        }
+    </style>
+   
+</head>
+<body style="word-wrap: break-word;">
+    <div style="text-align:center;margin-right: 7%;">
+        <input type="button" value="Start Webcam" onclick="start()" class="button button-sc">
+        <input type="button" value="Stop Webcam" onclick="stop()" class="button button-sc">
+        <input type="button" value="Capture Image" onclick="snapshot()" class="button button-sc">
+        <input type="button" value="Save Image" onclick="SaveImage()" class="button button-sc">
+    </div>
+    <div style="margin-left: 100px; float: left; font-family: undefined;">
+        <div>
+            <video id="sourcevid" autoplay="" width="480" height="360" onloadedmetadata="ResizeCanvas();">
+                Sorry, you're browser doesn't support video. Please try
+                <a href="http://snapshot.opera.com/labs/camera/">Opera</a>.
+            </video>
+        </div>
+
+    </div>
+    <div style="margin-left: 100px; font-family: undefined;">
+        <img id="CaptureImage" src="" style="margin-left: 20px;" width="480" height="360">
+        <canvas id="tmpImage" style="margin-left: 20px; display: none;" width="480" height="360"></canvas>
+    </div>
+
+    <script>
+        var ctx = null;
+        var canvas = document.getElementById("tmpImage");
+        var localMediaStream = null;
+        var video = document.querySelector('video');
+
+        function snapshot() {
+            if (localMediaStream) {
+                ctx.drawImage(video, 0, 0);
+                var img = document.getElementById('CaptureImage');
+                // "image/webp" works in Chrome 18. In other browsers, this will fall back to image/png.
+                img.src = canvas.toDataURL('image/webp');
+                $("#tmpImage").show();
+            }
+        }
+
+        function hasGetUserMedia() {
+            // Note: Opera builds are unprefixed.
+            return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia || navigator.msGetUserMedia);
+        }
+
+        function onFailSoHard() {
+
+        }
+
+        function start() {
+            if (hasGetUserMedia()) {
+                if (navigator.webkitGetUserMedia)
+                    navigator.getUserMedia = navigator.webkitGetUserMedia;
+                //var getUserMedia = navigator.webkitGetUserMedia || navigator.getUserMedia;
+
+
+                //var gumOptions = { video: true, toString: function () { return 'video'; } };
+                if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ video: true, audio: true }, function (stream) {
+                        if (navigator.webkitGetUserMedia) {
+                            video.src = window.webkitURL.createObjectURL(stream);
+                        } else {
+                            video.src = stream; // Opera
+                        }
+                        localMediaStream = stream;
+                    }, onFailSoHard);
+                } else {
+                    video.src = 'somevideo.webm'; // fallback.
+                }
+            }
+        }
+
+        function stop() {
+            video = document.getElementById('sourcevid');
+            video.src = "";
+        }
+
+        function ResizeCanvas() {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+        }
+
+        $(document).ready(function () {
+            //$('.button').button();
+            $("#tmpImage").hide();
+            ctx = canvas.getContext('2d');
+        });
+
+        function SaveImage() {
+            var contactGuid = window.parent.Xrm.Page.data.entity.getId();
+            if (contactGuid != null) {
+                contactGuid = contactGuid.replace(/[{}]/g, "");
+                //getAnnotation(contactId);
+                var imgSrc = $("#CaptureImage").attr("src");
+                if (imgSrc != "") {
+                    var splitImage = imgSrc.split(";");
+                    var removebase = splitImage[1];
+                    removebase = removebase.split(",")[1];
+                    getActivity(contactGuid, removebase);
+                }
+
+            } else {
+                setTimeout(function () {
+                    SaveImage();
+                }, 2000)
+            }
+
+        }
+
+
+        //get activity
+        function getActivity(contactGuid, removebase) {            
+            var req = new XMLHttpRequest();
+            req.open("GET", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_attachmentses?$select=_regardingobjectid_value&$expand=regardingobjectid_contact_vtv_attachments($select=contactid)&$filter=_regardingobjectid_value eq " + contactGuid + "", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("Prefer", "odata.include-annotations=\"*\"");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 200) {
+                        var results = JSON.parse(this.response);
+                        for (var i = 0; i < results.value.length; i++) {
+                            var _regardingobjectid_value = results.value[i]["_regardingobjectid_value"];
+                            var _regardingobjectid_value_formatted = results.value[i]["_regardingobjectid_value@OData.Community.Display.V1.FormattedValue"];
+                            var contact_vtv_attachmentses_activityid = results.value[i].activityid;
+                            //Use @odata.nextLink to query resulting related records
+                            var regardingobjectid_contact_vtv_attachments_NextLink = results.value[i]["regardingobjectid_contact_vtv_attachments@odata.nextLink"];
+                            DeleteAttachmentActivity(contact_vtv_attachmentses_activityid);
+                        }
+                        createAttachmentActivity(contactGuid, removebase);
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+        //Delete previous attachments activity if exist
+        function DeleteAttachmentActivity(attachmentId) {
+            var req = new XMLHttpRequest();
+            req.open("DELETE", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_attachmentses(" + attachmentId + ")", true);
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 204 || this.status === 1223) {
+                        //Success - No Return Data - Do Something
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send();
+        }
+
+        //create attachment ctivity
+        function createAttachmentActivity(contactGuid, removebase) {
+            var entity = {};
+            entity.subject = contactGuid;
+            entity["regardingobjectid_contact@odata.bind"] = "/contacts(" + contactGuid + ")";
+
+            var req = new XMLHttpRequest();
+            req.open("POST", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_attachmentses", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 204) {
+                        var uri = this.getResponseHeader("OData-EntityId");
+                        var regExp = /\(([^)]+)\)/;
+                        var matches = regExp.exec(uri);
+                        var newEntityId = matches[1];
+                        CreateAnnotationForAttachmentActivity(newEntityId, removebase);
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send(JSON.stringify(entity));
+        }
+
+        //create annotation for attachmnet activity
+        function CreateAnnotationForAttachmentActivity(attachmentId, removebase) {
+            var entity = {};
+            entity.filename = "Member Image.webp";
+            entity.subject = "Member Image";
+            entity.documentbody = removebase;
+            entity.mimetype = "image/webp";
+            entity["objectid_vtv_attachments@odata.bind"] = "/vtv_attachmentses(" + attachmentId + ")";
+
+            var req = new XMLHttpRequest();
+            req.open("POST", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/annotations", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 204) {
+                        var uri = this.getResponseHeader("OData-EntityId");
+                        var regExp = /\(([^)]+)\)/;
+                        var matches = regExp.exec(uri);
+                        var newEntityId = matches[1];
+                        UpdateAttachmentActivity(attachmentId);
+                        alert("Image Updated");
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send(JSON.stringify(entity));
+        }
+        
+
+        function UpdateAttachmentActivity(attachmentId) {
+            var entity = {};
+            entity.vtv_isupdated = true;
+
+            var req = new XMLHttpRequest();
+            req.open("PATCH", window.parent.Xrm.Page.context.getClientUrl() + "/api/data/v8.2/vtv_attachmentses(" + attachmentId + ")", true);
+            req.setRequestHeader("OData-MaxVersion", "4.0");
+            req.setRequestHeader("OData-Version", "4.0");
+            req.setRequestHeader("Accept", "application/json");
+            req.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            req.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                    req.onreadystatechange = null;
+                    if (this.status === 204) {
+                       
+                    } else {
+                        Xrm.Utility.alertDialog(this.statusText);
+                    }
+                }
+            };
+            req.send(JSON.stringify(entity));
+        }
+
+    </script>
+
+
+
+
+</body>
+</html>
