@@ -1,6 +1,6 @@
 /* global angular, document, window */
 'use strict';
-var serviceBase = "http://mvm-iis.cloudapp.net/Sanjust/";
+var serviceBase = "http://sanjust.azurewebsites.net/";
 //var serviceBase = "http://localhost:17543/"
 angular.module('starter.controllers', [])
 
